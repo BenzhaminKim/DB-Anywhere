@@ -16,3 +16,23 @@ class BaseModelORMTrue(BaseModel):
 
         orm_mode = True
 
+
+class UserRegisterIn(BaseModelORMTrue):
+    """User Register Input DTO"""
+    name: str
+    email: EmailStr
+    password: str # TODO: validate password format
+
+class UserRegisterOut(BaseModelORMTrue):
+    """User Register Output DTO"""
+    name: str
+    email: EmailStr
+    
+class UserLoginIn(BaseModelORMTrue):
+    """User Login Input DTO"""
+    email: EmailStr
+    password: str
+
+class UserLoginOut(BaseModelORMTrue):
+    """User Login Output DTO"""
+    token: str

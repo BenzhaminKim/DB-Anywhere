@@ -4,6 +4,8 @@ from sqlalchemy import ForeignKey,Boolean, Column, DateTime, Integer, String
 
 from anywhere.common.base_sql_model import Base
 from anywhere.databases.schemas.enum import DatabaseStatus
+from sqlalchemy.dialects.postgresql import UUID
+import uuid
 
 from sqlalchemy.orm import relationship
 
@@ -14,7 +16,7 @@ class Database(Base):
 
     __tablename__ = "databases"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String(255))
     type = Column(String(255), nullable=False)
     status = Column(String(255), default=DatabaseStatus.processing, nullable=False)

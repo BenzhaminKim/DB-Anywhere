@@ -11,6 +11,8 @@ fastapi = "^0.88.0"
 pydantic = "^1.10.2"
 python-dotenv = "^0.21.0"
 SQLAlchemy = "^1.4.45"
+passlib = "^1.7.4"
+jose = "^1.0.0"
 
 [tool.poetry.dev-dependencies]
 

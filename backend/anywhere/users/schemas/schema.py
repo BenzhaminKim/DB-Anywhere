@@ -16,7 +16,6 @@ class BaseModelORMTrue(BaseModel):
 
         orm_mode = True
 
-
 class UserRegisterIn(BaseModelORMTrue):
     """User Register Input DTO"""
     name: str
@@ -36,3 +35,10 @@ class UserLoginIn(BaseModelORMTrue):
 class UserLoginOut(BaseModelORMTrue):
     """User Login Output DTO"""
     token: str
+
+class UserGetOut(BaseModelORMTrue):
+    """User Get Out DTO"""
+    id: int
+    email: str
+    name: str
+    created_at: datetime

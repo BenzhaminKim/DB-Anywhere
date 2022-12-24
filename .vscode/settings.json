@@ -1,3 +1,8 @@
 {
-  "cSpell.words": ["fastapi", "pydantic", "sqlalchemy"]
+  "cSpell.words": [
+    "fastapi",
+    "passlib",
+    "pydantic",
+    "sqlalchemy"
+  ]
 }

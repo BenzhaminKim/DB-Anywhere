@@ -9,8 +9,8 @@ from anywhere.users.schemas.schema import (
     UserRegisterOut,
 )
 from anywhere.users.services.user_service import UserService
-from anywhere.users.services.auth_service import JwtBearer, UserToken
-from backend.anywhere.users.schemas.schema import UserGetOut
+from anywhere.users.services.auth_service import jwtBearer, UserToken
+from anywhere.users.schemas.schema import UserGetOut
 
 router = APIRouter(
     prefix="/users",
@@ -28,7 +28,7 @@ async def create_user(
     """
     user = await user_service.create(user_register_in=user_register_in)
 
-    return UserRegisterOut.from_orm(user=user)
+    return UserRegisterOut.from_orm(user)
 
 
 @router.post("/login", response_model=UserLoginOut)
@@ -55,7 +55,7 @@ async def login(
     "/logout",
 )
 async def logout(
-    user_token: UserToken = Depends(JwtBearer),
+    user_token: UserToken = Depends(jwtBearer),
 ) -> None:
     """
     Logout a user.
@@ -66,7 +66,7 @@ async def logout(
 
 @router.get("/profile", response_model=UserGetOut)
 async def get_user(
-    user_token: UserToken = Depends(JwtBearer),
+    user_token: UserToken = Depends(jwtBearer),
     user_service: UserService = Depends(),
 ) -> UserGetOut:
     """

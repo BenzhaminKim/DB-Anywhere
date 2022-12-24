@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session, joinedload
 from sqlalchemy.sql.selectable import Select
 
 from anywhere.users.model import User
-from backend.anywhere.common.base_sql_model import Database
+from anywhere.common.base_sql_model import Database
 
 
 class UserDB:
@@ -48,7 +48,7 @@ class UserDB:
 
         return bool(result.scalars().one_or_none())
 
-    async def get(self, id: int) -> Optional[User]:
+    async def get(self, id: str) -> Optional[User]:
         """
         get a user by id
         """

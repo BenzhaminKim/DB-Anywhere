@@ -24,7 +24,7 @@ security = HTTPBearer()
 class UserToken(BaseModel):
     """UserToken"""
 
-    user_id: int
+    user_id: str
     expires: str
 
 
@@ -90,7 +90,7 @@ class JwtBearer(HTTPBearer):
             raise HTTPException(status_code=400, detail="EXPIRED_TOKEN")
 
         return UserToken(
-            user_id=user.id,
+            user_id=str(user.id),
             expires=decoded_token["expires"],
         )
 

@@ -8,7 +8,7 @@ from pydantic import AnyHttpUrl, BaseSettings, EmailStr, HttpUrl, PostgresDsn, v
 class Settings(BaseSettings):
 
     API_V1_STR: str = "/v1"
-    
+
     POSTGRES_SERVER: str
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
@@ -57,6 +57,7 @@ class Settings(BaseSettings):
             user=values.get("POSTGRES_USER"),
             password=values.get("POSTGRES_PASSWORD"),
             host=values.get("POSTGRES_SERVER"),
+            port=values.get("POStGRES_PORT"),
             path=f"/{values.get('POSTGRES_DB') or ''}",
         )
 

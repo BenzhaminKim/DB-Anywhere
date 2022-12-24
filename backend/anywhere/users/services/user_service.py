@@ -61,7 +61,7 @@ class UserService:
         user_exists = await self._user_db.exists_by_email(email)
 
         if user_exists:
-            raise HTTPException(status_code=404, detail="Item not found")
+            raise HTTPException(status_code=400, detail="The email already exists")
 
     async def login(self, user_login_in: UserLoginIn) -> UserLoginOut:
         """
@@ -82,11 +82,9 @@ class UserService:
         token = self._encode_token(user.id)
         return UserLoginOut(user_id=user.id, token=token)
 
-    async def get(self, id: int) -> User:
+    async def get(self, id: str) -> User:
         """User의 정보를 가져옵니다."""
-
         user = await self._user_db.get(id=id)
-
         if user is None:
             raise HTTPException(status_code=404, detail="USER_NOT_FOUND")
 
@@ -128,7 +126,7 @@ class UserService:
     @classmethod
     def _encode_token(
         cls,
-        user_id: int,
+        user_id: str,
     ) -> str:
         """
         유저의 정보를 담고 있는 data 를 받아서 access token 을 반환한다.
@@ -144,14 +142,14 @@ class UserService:
     @classmethod
     def _make_payload(
         cls,
-        user_id: int,
+        user_id: str,
         date_time: str,
     ) -> dict:
         """
         유저의 정보를 담아 jwt token 의 payload를 생성합니다.
         """
         user_token = UserToken(
-            user_id=user_id,
+            user_id=str(user_id),
             expires=date_time,
         )
         return user_token.dict()

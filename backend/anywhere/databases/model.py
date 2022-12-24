@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import ForeignKey,Boolean, Column, DateTime, Integer, String
+from sqlalchemy import ForeignKey, Boolean, Column, DateTime, Integer, String
 
 from anywhere.common.base_sql_model import Base
 from anywhere.databases.schemas.enum import DatabaseStatus
@@ -8,6 +8,7 @@ from sqlalchemy.dialects.postgresql import UUID
 import uuid
 
 from sqlalchemy.orm import relationship
+
 
 class Database(Base):
     """
@@ -29,10 +30,7 @@ class Database(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     deleted = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow, index=True)
-    
-    user_id = Column(Integer, ForeignKey("users.id"))
 
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
 
     user = relationship("User", backref="databases")
-
-

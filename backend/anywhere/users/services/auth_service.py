@@ -8,11 +8,12 @@ from jose import jwt
 from pydantic import BaseModel
 from fastapi import HTTPException
 from anywhere.users.repository import UserDB
+from anywhere.common.config import settings
 
 # to get a string like this run:
 # openssl rand -hex 32
 # secret key 는 서버만 알고 있는 값이다.
-SECRET_KEY = "23bea949a01c50a8b95914076e6cbd6fd0963793358511c90e94c89260918d5d"
+SECRET_KEY = settings.SECRET_KEY
 ALGORITHM = "HS256"
 TOKEN_EXPIRE_DURATION_IN_DAYS = 1
 RESET_PASSWORD_TOKEN_EXPIRE_DURATION_IN_MINUTES = 60

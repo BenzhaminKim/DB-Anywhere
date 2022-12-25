@@ -34,3 +34,7 @@ class Database(Base):
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"))
 
     user = relationship("User", backref="databases")
+
+    @property
+    def id(self) -> str:
+        return str(self.id)

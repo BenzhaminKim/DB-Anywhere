@@ -42,8 +42,10 @@ class DatabaseDB:
         """
         with self.session_factory() as session:
             stmt = select(Database).where(
-                Database.id == database_id,
-                Database.user_id == user_id,
+                and_(
+                    Database.id == database_id,
+                    Database.user_id == user_id,
+                )
             )
 
             result = session.execute(stmt)

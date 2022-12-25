@@ -7,13 +7,13 @@ from sqlalchemy.future import select
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy.sql.selectable import Select
 
-from anywhere.users.model import User
 from anywhere.common.base_sql_model import DatabaseConnection
+from anywhere.databases.model import Database
 
 
-class UserDB:
+class DatabaseDB:
     """
-    UserDB
+    DatabaseDB
     """
 
     def __init__(
@@ -25,49 +25,50 @@ class UserDB:
     ) -> None:
         self.session_factory = session_factory
 
-    async def add(self, user: User) -> User:
+    async def add(self, database: Database) -> Database:
         """
-        add a data snapshot
+        create a database
         """
         with self.session_factory() as session:
-            session.add(user)
+            session.add(database)
             session.commit()
-            session.refresh(user)
+            session.refresh(database)
 
-        return user
+        return database
 
-    async def exists_by_email(self, email: str) -> bool:
+    async def get(self, user_id: str, database_id: Database) -> Database:
         """
-        check if the email exists
+        get a database
         """
-
         with self.session_factory() as session:
-            stmt = select(User).where(User.email == email)
-
-            result = session.execute(stmt)
-
-        return bool(result.scalars().one_or_none())
-
-    async def get(self, id: str) -> Optional[User]:
-        """
-        get a user by id
-        """
-
-        with self.session_factory() as session:
-            stmt = select(User).where(User.id == id)
+            stmt = select(Database).where(
+                Database.id == database_id,
+                Database.user_id == user_id,
+            )
 
             result = session.execute(stmt)
 
         return result.scalars().one_or_none()
 
-    async def get_by_email(self, email: str) -> Optional[User]:
+    async def get_all_by_user_id(self, user_id: str) -> List[Database]:
         """
-        get a user by email
+        get all databases for a user
         """
-
         with self.session_factory() as session:
-            stmt = select(User).where(User.email == email)
+            stmt = select(Database).where(
+                Database.user_id == user_id,
+            )
 
             result = session.execute(stmt)
 
-        return result.scalars().one_or_none()
+        return result.scalars().unique().all()
+
+    async def delete(self, database_id: str) -> None:
+        """
+        delete a database
+        """
+
+        with self.session_factory() as session:
+            stmt = delete(Database).where(Database.id == database_id)
+            session.execute(stmt)
+            session.commit()

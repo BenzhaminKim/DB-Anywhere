@@ -1,9 +1,10 @@
-from enum import Enum,auto
+from enum import Enum, auto
+
 
 class DatabaseStatus(Enum):
     """
     DatabaseStatus
     """
 
-    processing = auto()
-    ready = auto()
+    processing = "processing"
+    ready = "ready"

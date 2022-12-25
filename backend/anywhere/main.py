@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from anywhere.common.config import settings
 from anywhere.users.controller import router as users_router
 from anywhere.databases.controller import router as databases_router
-from anywhere.common.base_sql_model import Database
+from anywhere.common.base_sql_model import DatabaseConnection
 import logging
 import sys
 
@@ -10,7 +10,7 @@ import sys
 logger = logging.getLogger(__name__)
 
 
-db = Database()
+db = DatabaseConnection()
 try:
     db.create_database()
 except Exception as e:  # pylint: disable=broad-except

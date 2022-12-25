@@ -20,7 +20,7 @@ class Database(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String(255))
     type = Column(String(255), nullable=False)
-    status = Column(String(255), default=DatabaseStatus.processing, nullable=False)
+    status = Column(String(255), default="processing", nullable=False)
     db_name = Column(String(255), nullable=False)
     db_user = Column(String(255), nullable=False)
     db_password = Column(String(255), nullable=False)

@@ -20,7 +20,7 @@ Base = declarative_base()
 
 
 @singleton
-class Database:
+class DatabaseConnection:
     """Database"""
 
     def __init__(self, db_url: str = str(settings.SQLALCHEMY_DATABASE_URI)) -> None:

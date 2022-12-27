@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: $DATABASE_NAME
+  namespace: $NAMESPACE
+  labels:
+    app: $DATABASE_NAME
+    database-uuid: $DATABASE_UUID
+    signature: $SIGNATURE
+spec:
+  selector:
+    app: $DATABASE_NAME
+  type: NodePort
+  ports:
+      port: 5432

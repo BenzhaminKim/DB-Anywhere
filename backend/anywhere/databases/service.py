@@ -3,7 +3,7 @@ import datetime
 from typing import List, Optional, Union
 from fastapi import HTTPException
 
-from anywhere.databases.repository import DatabaseDB
+from anywhere.databases.repositories.db import DatabaseDB
 from anywhere.databases.schemas.schema import DatabaseCreateIn
 from anywhere.databases.model import Database
 from anywhere.databases.schemas.schema import DatabaseGetAllBase

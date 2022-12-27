@@ -6,10 +6,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import Session, joinedload
 from sqlalchemy.sql.selectable import Select
-
+import logging
 from anywhere.common.base_sql_model import DatabaseConnection
 from anywhere.databases.model import Database
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class DatabaseDB:
     """

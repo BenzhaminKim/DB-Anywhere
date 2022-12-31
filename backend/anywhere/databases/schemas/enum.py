@@ -8,3 +8,13 @@ class DatabaseStatus(Enum):
 
     processing = "processing"
     ready = "ready"
+
+
+class DatabaseType(Enum):
+    """
+    DatabaseType
+    """
+
+    postgres = "postgres"
+    mysql = "mysql"
+    mongodb = "mongodb"

@@ -21,6 +21,3 @@ class User(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     created_at = Column(DateTime, default=datetime.utcnow, index=True)
 
-    @property
-    def id(self) -> str:
-        return str(self.id)

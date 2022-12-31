@@ -6,6 +6,7 @@ import yaml
 from pathlib import Path
 from anywhere.common.kubernetes_client import KubernetesClient
 from anywhere.databases.model import Database
+from anywhere.common.config import settings
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -14,7 +15,7 @@ logger = logging.getLogger(__name__)
 TEMPLATES_DIR = Path(__file__).parent / "templates"
 
 
-class DatabasePVC(KubernetesClient):
+class DatabaseK8SPVC(KubernetesClient):
     def __init__(self, database: Database):
         super().__init__()
         self.database = database
@@ -27,22 +28,20 @@ class DatabasePVC(KubernetesClient):
             template = Template(f.read())
 
         yaml_str = template.substitute(
-            DATABASE_NAME=f"{self.database.type}-{self.database.id}",
-            DATABASE_UUID=self.database.id,
-            DB_USER=self.database.db_user,
-            DB_PASSWORD=self.database.db_password,
-            DB_NAME=self.database.db_name,
-            DB_IMAGE=self.database.type,  # TODO: type별로 이미지 다르게 적용
-            SIGNATURE="db-anywhere",
+            DATABASE_NAME=self.database.name_for_k8s,
+            DATABASE_UUID=str(self.database.id),
+            VOLUME=self.database.db_capacity,
+            SIGNATURE=settings.SIGNATURE,
+            NAMESPACE=settings.NAMESPACE,
         )
 
         yaml_dict = yaml.safe_load(yaml_str)
         return yaml_dict
 
-    async def create(self, namespace):
+    async def create(self):
         body = self.yaml
         thread = self.v1_core.create_namespaced_persistent_volume_claim(
-            namespace=namespace,
+            namespace=settings.NAMESPACE,
             body=body,
             async_req=True,
         )

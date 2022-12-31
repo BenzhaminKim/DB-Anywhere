@@ -16,6 +16,9 @@ class Settings(BaseSettings):
 
     SECRET_KEY: str
 
+    NAMESPACE: str = "anywhere"
+    SIGNATURE: str = "db-anywhere"
+
     class Config:
         env_file = "./.env"
 

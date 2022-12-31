@@ -8,7 +8,6 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-@singleton
 class KubernetesClient:
     def __init__(self) -> None:
         try:

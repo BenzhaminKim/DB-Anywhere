@@ -6,6 +6,7 @@ import yaml
 from pathlib import Path
 from anywhere.common.kubernetes_client import KubernetesClient
 from anywhere.databases.model import Database
+from anywhere.common.config import settings
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -14,11 +15,11 @@ logger = logging.getLogger(__name__)
 TEMPLATES_DIR = Path(__file__).parent / "templates"
 
 
-class DatabaseDeployment(KubernetesClient):
+class DatabaseK8SDeployment(KubernetesClient):
     def __init__(self, database: Database):
-        super().__init__()
         self.database = database
         self.yaml = self._load_yaml()
+        super().__init__()
 
     def _load_yaml(self):
         TEMPLATE_PATH = TEMPLATES_DIR / "deployment.yaml"
@@ -27,19 +28,22 @@ class DatabaseDeployment(KubernetesClient):
             template = Template(f.read())
 
         yaml_str = template.substitute(
-            DATABASE_NAME=f"{self.database.type}-{self.database.id}",
-            DATABASE_UUID=self.database.id,
-            VOLUME=self.database.db_capacity,
-            SIGNATURE="db-anywhere",
+            DATABASE_NAME=self.database.name_for_k8s,
+            DATABASE_UUID=str(self.database.id),
+            SIGNATURE=settings.SIGNATURE,
+            NAMESPACE=settings.NAMESPACE,
+            DB_USER=self.database.db_user,
+            DB_PASSWORD=self.database.db_password,
+            DB_NAME=self.database.db_name,
         )
 
         yaml_dict = yaml.safe_load(yaml_str)
         return yaml_dict
 
-    async def create(self, namespace):
+    async def create(self):
         body = self.yaml
         thread = self.v1_apps.create_namespaced_deployment(
-            namespace=namespace,
+            namespace=settings.NAMESPACE,
             body=body,
             async_req=True,
         )

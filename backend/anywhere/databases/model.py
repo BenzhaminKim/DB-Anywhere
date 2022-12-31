@@ -25,7 +25,7 @@ class Database(Base):
     db_user = Column(String(255), nullable=False)
     db_password = Column(String(255), nullable=False)
     db_capacity = Column(Integer, nullable=False)
-    db_address = Column(String(255))
+    db_host = Column(String(255))
     db_port = Column(Integer)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     deleted = Column(Boolean, default=False)
@@ -36,5 +36,5 @@ class Database(Base):
     user = relationship("User", backref="databases")
 
     @property
-    def id(self) -> str:
-        return str(self.id)
+    def name_for_k8s(self) -> str:
+        return f"{self.type}-{str(self.id)}"

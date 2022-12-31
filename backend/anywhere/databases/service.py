@@ -7,6 +7,7 @@ from anywhere.databases.repositories.db import DatabaseDB
 from anywhere.databases.schemas.schema import DatabaseCreateIn
 from anywhere.databases.model import Database
 from anywhere.databases.schemas.schema import DatabaseGetAllBase
+from anywhere.databases.repositories.k8s.database_kubernetes import DatabaseK8S
 
 
 class DatabaseService:
@@ -47,6 +48,10 @@ class DatabaseService:
 
         database = await self._database_db.add(database)
 
+        database_k8s = DatabaseK8S(database=database)
+        database = await database_k8s.create_database_k8s()
+
+        database = await self._database_db.add(database)
         return database
 
     async def get(self, user_id: str, database_id: str) -> Database:

@@ -7,6 +7,7 @@ from fastapi import Query
 from pydantic import BaseModel, EmailStr, Field, root_validator, validator
 
 from anywhere.databases.model import Database
+from anywhere.databases.schemas.enum import DatabaseType
 
 
 class BaseModelORMTrue(BaseModel):
@@ -64,7 +65,7 @@ class DatabaseGetDetailOut(BaseModelORMTrue):
 
     id: str
     name: str
-    type: str
+    type: DatabaseType
     db_name: str
     db_user: str
     db_password: str

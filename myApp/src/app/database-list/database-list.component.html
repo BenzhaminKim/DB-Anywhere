@@ -1,0 +1,35 @@
+<p>database-list works!</p>
+<h2>{{database.id}}</h2>
+<h2>{{database.name | uppercase}}</h2>
+
+<div>
+    <label for="name">Hero name: </label>
+    <input id="name" [(ngModel)]="database.name" placeholder="name">
+</div>
+
+<h2>My Databases</h2>
+<ul class="databases">
+  <li>
+    <button type="button">
+      <span class="badge">{{database.id}}</span>
+      <span class="name">{{database.name}}</span>
+    </button>
+  </li>
+</ul>
+
+<li *ngFor="let database of databases">
+    <button [class.selected]="database === selectedDatabase" type="button" (click)="onSelect(database)">
+        <span class="badge">{{database.id}}</span>
+        <span class="name">{{database.name}}</span>
+      </button>
+</li>
+<p>{{cat.id}}</p>
+
+<div *ngIf="selectedDatabase">
+    <h2>{{selectedDatabase.name | uppercase}} Details</h2>
+    <div>id: {{selectedDatabase.id}}</div>
+    <div>
+      <label for="database-name">Hero name: </label>
+      <input id="database-name" [(ngModel)]="selectedDatabase.name" placeholder="name">
+    </div>
+  </div>

@@ -12,6 +12,9 @@ export class DatabaseListComponent implements OnInit {
   database: Database = {
     id: 1,
     name: 'db1',
+    status: 'ready',
+    type: 'postgres',
+    created_at: '2022-09-01',
   };
   databases: Database[] = [];
   cat = {

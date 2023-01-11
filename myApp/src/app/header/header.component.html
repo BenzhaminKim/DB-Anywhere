@@ -41,12 +41,23 @@
 
       <div class="text-end">
         <button
+          *ngIf="isLoggedIn == false; else elseBlock"
           routerLink="/login"
           type="button"
           class="btn btn-outline-light me-2"
         >
           Login
         </button>
+        <ng-template #elseBlock>
+          <button
+            (click)="logOut()"
+            routerLink="/login"
+            type="button"
+            class="btn btn-outline-light me-2"
+          >
+            Logout
+          </button>
+        </ng-template>
       </div>
     </div>
   </div>

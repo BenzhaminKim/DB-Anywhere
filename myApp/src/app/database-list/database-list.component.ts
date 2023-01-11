@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
 import { Database } from './database';
 import { DatabaseListService } from './database-list.service';
 import { DATABASES } from './mock-database';
@@ -23,7 +24,10 @@ export class DatabaseListComponent implements OnInit {
   };
   selectedDatabase?: Database;
 
-  constructor(private databaseListService: DatabaseListService) {}
+  constructor(
+    private databaseListService: DatabaseListService,
+    private cookieService: CookieService
+  ) {}
 
   ngOnInit(): void {
     this.cat = {
@@ -31,6 +35,8 @@ export class DatabaseListComponent implements OnInit {
       name: 'catsss',
     };
     this.getDatabases();
+
+    console.log(this.cookieService.getAll());
   }
   getDatabases(): void {
     this.databases = this.databaseListService.getDatabases();

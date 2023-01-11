@@ -1,7 +1,9 @@
 <h2>My Databases</h2>
+<div routerLink="/database/create" class="btn btn-primary">Create</div>
 <div class="d-flex align-content-start flex-wrap">
   <div
     *ngFor="let database of databases"
+    routerLink="/database/{{ database.id }}"
     class="card border border-dark rounded p-3 m-2"
   >
     <img src="assets/postgresql.png" class="card-img-top" alt="..." />

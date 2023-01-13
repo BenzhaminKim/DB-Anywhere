@@ -49,9 +49,8 @@ class DatabaseService:
         database = await self._database_db.add(database)
 
         database_k8s = DatabaseK8S(database=database)
-        database = await database_k8s.create_database_k8s()
+        await database_k8s.create_database_k8s()
 
-        database = await self._database_db.add(database)
         return database
 
     async def get(self, user_id: str, database_id: str) -> Database:
@@ -63,7 +62,7 @@ class DatabaseService:
 
         if not database:
             raise HTTPException(status_code=404, detail="Database is not found")
-
+        #TODO: 상태 업데이트, NodePort 업데이트
         return database
 
     async def get_all(self, user_id: str) -> List[DatabaseGetAllBase]:

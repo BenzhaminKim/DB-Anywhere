@@ -13,8 +13,20 @@
     "project": "./tsconfig.json"
   },
   "rules": {
+    "import/extensions": ["error", "ignorePackages", {
+      "js": "never",
+      "jsx": "never",
+      "ts": "never",
+      "tsx": "never",
+      "mjs": "never"
+    }],
     "react/jsx-filename-extension": [2, { "extensions": [
       ".js", ".jsx", ".ts", ".tsx"
     ] }]
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
   }
 }

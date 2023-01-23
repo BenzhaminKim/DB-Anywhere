@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ConfigProvider } from 'antd';
 
 /**
 function ErrorFalback() {
@@ -15,5 +16,9 @@ type AppProviderProps = {
 };
 
 export default function AppProvider({ children }: AppProviderProps) {
-	return <React.Suspense fallback={<div>SPIN</div>}>{children}</React.Suspense>;
+	return (
+		<React.Suspense fallback={<div>SPIN</div>}>
+			<ConfigProvider>{children}</ConfigProvider>
+		</React.Suspense>
+	);
 }

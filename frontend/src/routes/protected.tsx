@@ -6,7 +6,7 @@ import { lazyImport } from '@/utils/lazyImport';
 import { MainLayout } from '@/components/Layout';
 
 const { DatabasesRoutes } = lazyImport(() => import('@/features/databases'), 'DatabasesRoutes');
-// const Dashboard = lazyImport(() => import('@/features/misc'), 'Dashboard');
+const { Dashboard } = lazyImport(() => import('@/features/misc'), 'Dashboard');
 
 function App() {
 	return (
@@ -32,6 +32,7 @@ const protectedRoutes = [
 		element: <App />,
 		children: [
 			{ path: 'database/*', element: <DatabasesRoutes /> },
+			{ path: '', element: <Dashboard /> },
 			{ path: '*', element: <Navigate to="." /> },
 		],
 	},

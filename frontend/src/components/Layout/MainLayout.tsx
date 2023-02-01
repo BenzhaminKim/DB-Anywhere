@@ -43,10 +43,9 @@ export default function MainLayout({ children }: MainLayoutProps) {
 			</Sider>
 			<Layout className="site-layout">
 				<Header style={{ padding: 0, background: colorBgContainer }} />
-				<Content style={{ margin: '0 16px' }}>{children}</Content>
+				<Content style={{ padding: 24, margin: 0, minHeight: 280, background: colorBgContainer }}>{children}</Content>
 				<Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
 			</Layout>
 		</Layout>
 	);
 }
-

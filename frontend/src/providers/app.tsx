@@ -6,18 +6,11 @@ import { HelmetProvider } from 'react-helmet-async';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
+import theme from '@/styles/theme';
+import { ThemeProvider } from '@/styles/themed-components';
+import globalAntTheme from '@/styles/AntTheme';
 import { AuthLoader } from '@/lib/auth';
 import { queryClient } from '@/lib/react-query';
-
-/**
-function ErrorFalback() {
-	return (
-		<div>
-			<h2>Hello </h2>
-		</div>
-	);
-}
-*/
 
 type AppProviderProps = {
 	children: React.ReactNode;
@@ -29,17 +22,19 @@ export default function AppProvider({ children }: AppProviderProps) {
 			<HelmetProvider>
 				<QueryClientProvider client={queryClient}>
 					<ReactQueryDevtools initialIsOpen={false} />
-					<ConfigProvider>
-						<AuthLoader
-							renderLoading={() => (
-								<div className="w-screen h-screen flex justify-center items-center">
-									<Spin size="large" />
-								</div>
-							)}
-						>
-							<Router>{children}</Router>
-						</AuthLoader>
-					</ConfigProvider>
+					<ThemeProvider theme={theme}>
+						<ConfigProvider theme={globalAntTheme}>
+							<AuthLoader
+								renderLoading={() => (
+									<div className="w-screen h-screen flex justify-center items-center">
+										<Spin size="large" />
+									</div>
+								)}
+							>
+								<Router>{children}</Router>
+							</AuthLoader>
+						</ConfigProvider>
+					</ThemeProvider>
 				</QueryClientProvider>
 			</HelmetProvider>
 		</React.Suspense>

@@ -22,7 +22,11 @@
     }],
     "react/jsx-filename-extension": [2, { "extensions": [
       ".js", ".jsx", ".ts", ".tsx"
-    ]}]
+    ]}],
+    "react/react-in-jsx-scope": "off",
+    "@typescript-eslint/no-explicit-any": [
+      "off"
+    ]
   },
   "settings": {
     "import/resolver": {

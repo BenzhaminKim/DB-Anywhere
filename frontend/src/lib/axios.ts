@@ -1,41 +1,32 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import axios, { AxiosInstance } from 'axios';
+import Axios, { AxiosHeaders, AxiosRequestConfig } from 'axios';
 
 import { API_URL } from '@/config';
 import storage from '@/utils/storage';
 
-class ApiService {
-	public session: AxiosInstance;
-
-	private static instance: ApiService;
-
-	constructor() {
-		this.session = axios.create({
-			baseURL: `${API_URL}/api`,
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-				'Content-Type': 'application/json;charset=UTF-8',
-			},
-		});
-
-		this.session.interceptors.request.use((config) => {
-			const newAxiosRequestConfig = config;
-			const token = storage.getToken();
-			if (token) {
-				newAxiosRequestConfig.headers.authorization = `${token}`;
-			}
-			newAxiosRequestConfig.headers.Accept = 'application/json';
-			return config;
-		});
+function authRequestInterceptor(config: AxiosRequestConfig) {
+	const token = storage.getToken();
+	if (token) {
+		(config.headers as AxiosHeaders).set('authorization', `${token}`);
 	}
 
-	static getInstance() {
-		if (!ApiService.instance) {
-			ApiService.instance = new ApiService();
-		}
-
-		return ApiService.instance;
-	}
+	return config;
 }
 
-export default ApiService.getInstance();
+const axios = Axios.create({
+	baseURL: API_URL,
+	headers: {
+		'Content-Type': 'application/json',
+	},
+});
+
+axios.interceptors.request.use(authRequestInterceptor);
+axios.interceptors.response.use(
+	(response) => {
+		return response.data;
+	},
+	(error) => {
+		return Promise.reject(error);
+	}
+);
+
+export default axios;

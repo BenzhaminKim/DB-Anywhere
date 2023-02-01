@@ -1,5 +1,5 @@
 {
-  "name": "vite-react",
+  "name": "db-anywhere",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -12,10 +12,18 @@
     "prettier": "prettier --write --config ./.prettierrc './src/**/*.{ts,tsx}'"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.0.1",
+    "@tanstack/react-query": "^4.22.4",
+    "@tanstack/react-query-devtools": "^4.24.4",
     "antd": "^5.1.6",
     "axios": "^1.2.3",
+    "dayjs": "^1.11.7",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-helmet-async": "^1.3.0",
+    "react-query-auth": "^2.0.0",
+    "react-router-dom": "^6.7.0",
+    "type-fest": "^1.2.0"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",

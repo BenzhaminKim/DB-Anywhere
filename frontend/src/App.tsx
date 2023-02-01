@@ -1,11 +1,12 @@
 import React from 'react';
+
 import AppProvider from '@/providers/app';
-import { Button } from 'antd';
+import AppRoutes from '@/routes';
 
 export default function App() {
 	return (
 		<AppProvider>
-			<Button type="primary">HELLo</Button>
+			<AppRoutes />
 		</AppProvider>
 	);
 }

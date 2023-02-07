@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { DesktopOutlined, FileOutlined, PieChartOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
+import { DesktopOutlined, PieChartOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Layout, Menu, theme } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -18,11 +19,8 @@ function getItem(label: React.ReactNode, key: React.Key, icon?: React.ReactNode,
 }
 
 const items: MenuItem[] = [
-	getItem('Option 1', '1', <PieChartOutlined />),
-	getItem('Option 2', '2', <DesktopOutlined />),
-	getItem('User', 'sub1', <UserOutlined />, [getItem('Tom', '3'), getItem('Bill', '4'), getItem('Alex', '5')]),
-	getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
-	getItem('Files', '9', <FileOutlined />),
+	getItem('Dashboard', '/app', <PieChartOutlined />),
+	getItem('Database', '/app/database/', <DesktopOutlined />),
 ];
 
 type MainLayoutProps = {
@@ -31,6 +29,7 @@ type MainLayoutProps = {
 
 export default function MainLayout({ children }: MainLayoutProps) {
 	const [collapsed, setCollapsed] = useState(false);
+	const navigate = useNavigate();
 	const {
 		token: { colorBgContainer },
 	} = theme.useToken();
@@ -39,12 +38,20 @@ export default function MainLayout({ children }: MainLayoutProps) {
 		<Layout style={{ minHeight: '100vh' }}>
 			<Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
 				<div style={{ height: 32, margin: 16, background: 'rgba(255, 255, 255, 0.2)' }} />
-				<Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
+				<Menu
+					theme="dark"
+					defaultSelectedKeys={['/app']}
+					mode="inline"
+					items={items}
+					onClick={(item) => {
+						navigate(item.key);
+					}}
+				/>
 			</Sider>
 			<Layout className="site-layout">
 				<Header style={{ padding: 0, background: colorBgContainer }} />
 				<Content style={{ padding: 24, margin: 0, minHeight: 280, background: colorBgContainer }}>{children}</Content>
-				<Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
+				<Footer style={{ textAlign: 'center' }}>DB Anywhere ©2023 Created by Younghwi Kim, Seunghyun Yu</Footer>
 			</Layout>
 		</Layout>
 	);

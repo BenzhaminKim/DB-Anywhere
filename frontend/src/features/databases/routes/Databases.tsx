@@ -1,11 +1,10 @@
 import { ContentLayout } from '@/components/Layout';
 
-// import { CreateDiscussion } from '../components/CreateDiscussion';
 import DatabasesList from '../components/DatabasesList';
 
-export default function Discussions() {
+export default function Databases() {
 	return (
-		<ContentLayout title="Discussions">
+		<ContentLayout title="Databases">
 			<DatabasesList />
 		</ContentLayout>
 	);

@@ -1,17 +1,15 @@
-import { Spin, Table } from 'antd';
+import { Spin, Table, Empty } from 'antd';
 import { formatDate } from '@/utils/format';
 
 import { useDatabases } from '../api/getDatabases';
 
-export default function DiscussionsList() {
+export default function DatabasesList() {
 	const databasesQuery = useDatabases();
 
 	if (databasesQuery.isLoading) {
 		return <Spin size="large" />;
 	}
-
-	if (!databasesQuery.data) return null;
-
+	if (!databasesQuery.data || !databasesQuery?.data?.length) return <Empty />;
 	return (
 		<Table
 			dataSource={databasesQuery.data}

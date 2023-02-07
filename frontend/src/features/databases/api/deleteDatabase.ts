@@ -4,7 +4,7 @@ import axios from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
 
 export const deleteDatabase = ({ databaseId }: { databaseId: string }) => {
-	return axios.delete(`/discussions/${databaseId}`);
+	return axios.delete(`/databases/${databaseId}`);
 };
 
 type UseDeleteDatabasesOptions = {

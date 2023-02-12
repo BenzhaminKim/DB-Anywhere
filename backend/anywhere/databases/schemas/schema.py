@@ -93,7 +93,7 @@ class DatabaseGetDetailOut(BaseModelORMTrue):
         return super().from_orm(database)
 
 
-class DatabaseGetAllBase(DatabaseCreateOut):
+class DatabaseGetAllBase(DatabaseGetDetailOut):
     """DatabaseGetAllBase"""
 
     ...

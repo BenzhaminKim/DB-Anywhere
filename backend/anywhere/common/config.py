@@ -14,7 +14,8 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
 
-    SECRET_KEY: str
+    ACCESS_TOKEN_SECRET_KEY: str
+    REFRESH_TOKEN_SECRET_KEY: str
 
     NAMESPACE: str = "anywhere"
     SIGNATURE: str = "db-anywhere"

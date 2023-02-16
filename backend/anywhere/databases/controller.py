@@ -1,14 +1,18 @@
 from typing import Any
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 
 from anywhere.databases.schemas.schema import DatabaseCreateIn
 from anywhere.databases.service import DatabaseService
 from anywhere.users.services.auth_service import jwtBearer, UserToken
-from anywhere.databases.schemas.schema import DatabaseCreateOut
-from anywhere.databases.schemas.schema import DatabaseGetDetailOut
-from anywhere.databases.schemas.schema import DatabaseGetAllOut
-from anywhere.databases.schemas.schema import DatabaseDeleteOut
+from anywhere.databases.schemas.schema import (
+    DatabaseCreateOut,
+    DatabaseDeleteOut,
+    DatabaseUpdateOut,
+    DatabaseGetAllOut,
+    DatabaseGetDetailOut,
+    DatabaseUpdateIn,
+)
 
 router = APIRouter(
     prefix="/databases",
@@ -17,7 +21,7 @@ router = APIRouter(
 
 
 @router.post("/", response_model=DatabaseCreateOut)
-async def create_database(
+def create_database(
     database_create_in: DatabaseCreateIn,
     user_token: UserToken = Depends(jwtBearer),
     database_service: DatabaseService = Depends(),
@@ -25,7 +29,7 @@ async def create_database(
     """
     Create new database.
     """
-    database = await database_service.create(
+    database = database_service.create(
         user_id=user_token.user_id,
         database_create_in=database_create_in,
     )
@@ -34,7 +38,7 @@ async def create_database(
 
 
 @router.get("/{database_id}", response_model=DatabaseGetDetailOut)
-async def get_database(
+def get_database(
     database_id: str,
     user_token: UserToken = Depends(jwtBearer),
     database_service: DatabaseService = Depends(),
@@ -43,7 +47,7 @@ async def get_database(
     Get a database detail
     """
 
-    database = await database_service.get(
+    database = database_service.get(
         user_id=user_token.user_id,
         database_id=database_id,
     )
@@ -52,7 +56,7 @@ async def get_database(
 
 
 @router.get("", response_model=DatabaseGetAllOut)
-async def get_all_databases(
+def get_all_databases(
     user_token: UserToken = Depends(jwtBearer),
     database_service: DatabaseService = Depends(),
 ) -> DatabaseGetDetailOut:
@@ -60,7 +64,7 @@ async def get_all_databases(
     Get all databases
     """
 
-    databases = await database_service.get_all(
+    databases = database_service.get_all(
         user_id=user_token.user_id,
     )
 
@@ -68,7 +72,7 @@ async def get_all_databases(
 
 
 @router.delete("/{database_id}", response_model=DatabaseDeleteOut)
-async def delete_database(
+def delete_database(
     database_id: str,
     user_token: UserToken = Depends(jwtBearer),
     database_service: DatabaseService = Depends(),
@@ -77,9 +81,29 @@ async def delete_database(
     Delete a database
     """
 
-    database_id = await database_service.delete(
+    database_id = database_service.delete(
         user_id=user_token.user_id,
         database_id=database_id,
     )
 
     return DatabaseDeleteOut(id=database_id)
+
+
+@router.patch("/{database_id}", response_model=DatabaseUpdateOut)
+def update_database(
+    database_id: str,
+    database_update_in: DatabaseUpdateIn,
+    user_token: UserToken = Depends(jwtBearer),
+    database_service: DatabaseService = Depends(),
+) -> DatabaseUpdateOut:
+    """
+    Update a database
+    """
+
+    database = database_service.update(
+        user_id=user_token.user_id,
+        database_id=database_id,
+        database_update_in=database_update_in,
+    )
+
+    return DatabaseUpdateOut.from_orm(database)

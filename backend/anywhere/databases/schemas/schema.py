@@ -23,7 +23,7 @@ class DatabaseCreateIn(BaseModelORMTrue):
     """Database Create Input DTO"""
 
     name: str
-    type: str
+    type: DatabaseType
     db_name: str
     db_user: str
     db_password: str
@@ -124,3 +124,11 @@ class DatabaseDeleteOut(BaseModelORMTrue):
         """
         database.id = str(database.id)
         return super().from_orm(database)
+
+
+class DatabaseUpdateIn(BaseModelORMTrue):
+    name: str
+
+
+class DatabaseUpdateOut(DatabaseCreateOut):
+    ...

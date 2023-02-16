@@ -35,7 +35,7 @@ class DatabaseK8SService(KubernetesClient):
         yaml_dict = yaml.safe_load(yaml_str)
         return yaml_dict
 
-    async def create(self) -> int:
+    def create(self) -> int:
         body = self.yaml
         thread = self.v1_core.create_namespaced_service(
             namespace=settings.NAMESPACE,

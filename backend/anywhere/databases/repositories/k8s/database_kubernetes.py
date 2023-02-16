@@ -20,11 +20,11 @@ class DatabaseK8S:
         self._service = DatabaseK8SService(database=self.database)
         self._deployment = DatabaseK8SDeployment(database=self.database)
 
-    async def create_database_k8s(self) -> None:
+    def create_database_k8s(self) -> None:
         try:
-            await self._deployment.create()
-            await self._pvc.create()
-            await self._service.create()
+            self._deployment.create()
+            self._pvc.create()
+            self._service.create()
         except Exception as e:
             logger.exception(e)
             # TODO: exception raise

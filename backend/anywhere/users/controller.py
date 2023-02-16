@@ -10,7 +10,7 @@ from anywhere.users.schemas.schema import (
 )
 from anywhere.users.services.user_service import UserService
 from anywhere.users.services.auth_service import jwtBearer, UserToken
-from anywhere.users.schemas.schema import UserGetOut, RefreshTokenOut, BaseToken
+from anywhere.users.schemas.schema import UserGetOut, RefreshTokenOut
 from anywhere.users.const import REFRESH_TOKEN_KEY, TOKEN_TYPE, ACCESS_TOKEN_KEY
 
 router = APIRouter(
@@ -38,13 +38,7 @@ async def refresh(
     user_service: UserService = Depends(),
 ):
     access_token = user_service.create_access_token(user_token.user_id)
-    return RefreshTokenOut(
-        access_token=BaseToken(
-            token=access_token,
-            token_key=ACCESS_TOKEN_KEY,
-            token_type=TOKEN_TYPE,
-        ),
-    )
+    return RefreshTokenOut(token=access_token)
 
 
 @router.post("/login", response_model=UserLoginOut)
@@ -57,15 +51,15 @@ async def login(
     Login a user.
     """
 
-    login_out = await user_service.login(user_login_in=user_login_in)
+    access_token, refresh_token = await user_service.login(user_login_in=user_login_in)
 
     response.set_cookie(
         key=REFRESH_TOKEN_KEY,
-        value=f"{TOKEN_TYPE} {login_out.refresh_token.token}",
+        value=f"{TOKEN_TYPE} {refresh_token}",
         httponly=True,
         samesite="none",
     )
-    return login_out
+    return UserLoginOut(token=access_token)
 
 
 @router.post(

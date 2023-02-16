@@ -1,6 +1,6 @@
 import asyncio
 from datetime import datetime, timedelta
-from typing import List, Optional, Union
+from typing import List, Optional, Tuple, Union
 from fastapi import HTTPException
 
 from jose import jwt
@@ -16,7 +16,6 @@ from anywhere.users.services.auth_service import (
     UserToken,
 )
 from anywhere.users.const import ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY, TOKEN_TYPE
-from anywhere.users.schemas.schema import BaseToken
 
 
 class UserService:
@@ -70,7 +69,7 @@ class UserService:
         if user_exists:
             raise HTTPException(status_code=400, detail="The email already exists")
 
-    async def login(self, user_login_in: UserLoginIn) -> UserLoginOut:
+    async def login(self, user_login_in: UserLoginIn) -> Tuple[str, str]:
         """
         Verify passed email, password and
         generate access token if these are valid
@@ -88,19 +87,7 @@ class UserService:
 
         access_token = self.create_access_token(user.id)
         refresh_token = self.create_refresh_token(user.id)
-        return UserLoginOut(
-            user_id=user.id,
-            access_token=BaseToken(
-                token=access_token,
-                token_key=ACCESS_TOKEN_KEY,
-                token_type=TOKEN_TYPE,
-            ),
-            refresh_token=BaseToken(
-                token=refresh_token,
-                token_key=REFRESH_TOKEN_KEY,
-                token_type=TOKEN_TYPE,
-            ),
-        )
+        return access_token, refresh_token
 
     async def get(self, id: str) -> User:
         """User의 정보를 가져옵니다."""
@@ -124,7 +111,7 @@ class UserService:
             access token
         """
         expire_date = datetime.utcnow() + timedelta(
-            minutes=5,
+            minutes=60,
         )
         access_token = self._encode_token(
             user_id=user_id,

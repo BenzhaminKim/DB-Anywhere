@@ -49,8 +49,7 @@ class BaseToken(BaseModelORMTrue):
 class UserLoginOut(BaseModelORMTrue):
     """User Login Output DTO"""
 
-    access_token: BaseToken
-    refresh_token: BaseToken
+    token: str
 
 
 class UserGetOut(BaseModelORMTrue):
@@ -81,4 +80,5 @@ class UserGetOut(BaseModelORMTrue):
 
 class RefreshTokenOut(BaseModelORMTrue):
     """Refresh Token DTO"""
-    access_token: BaseToken
+
+    token: str

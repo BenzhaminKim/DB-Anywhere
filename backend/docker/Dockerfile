@@ -8,7 +8,7 @@ RUN apt update && \
   libcurl4 
 # Install poetry
 RUN pip install --upgrade pip
-RUN curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.2.1 POETRY_HOME=/opt/poetry python && \
+RUN curl -sSL https://install.python-poetry.org | POETRY_VERSION=1.3.2 POETRY_HOME=/opt/poetry python && \
   cd /usr/local/bin && \
   ln -s /opt/poetry/bin/poetry && \
   poetry config virtualenvs.create false

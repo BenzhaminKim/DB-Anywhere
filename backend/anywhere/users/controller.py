@@ -63,6 +63,7 @@ async def login(
         key=REFRESH_TOKEN_KEY,
         value=f"{TOKEN_TYPE} {login_out.refresh_token.token}",
         httponly=True,
+        samesite="none",
     )
     return login_out
 

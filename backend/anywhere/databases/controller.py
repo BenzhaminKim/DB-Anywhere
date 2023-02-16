@@ -20,7 +20,7 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=DatabaseCreateOut)
+@router.post("", response_model=DatabaseCreateOut)
 def create_database(
     database_create_in: DatabaseCreateIn,
     user_token: UserToken = Depends(jwtBearer),

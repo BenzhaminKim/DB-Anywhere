@@ -8,6 +8,7 @@ from anywhere.databases.schemas.schema import DatabaseCreateIn
 from anywhere.databases.model import Database
 from anywhere.databases.schemas.schema import DatabaseGetAllBase, DatabaseUpdateOut
 from anywhere.databases.repositories.k8s.database_kubernetes import DatabaseK8S
+from anywhere.common.config import settings
 
 
 class DatabaseService:
@@ -62,7 +63,7 @@ class DatabaseService:
 
         if not database:
             raise HTTPException(status_code=404, detail="Database is not found")
-        # TODO: 상태 업데이트, NodePort 업데이트
+        self._update_status(database)
         return database
 
     def get_all(self, user_id: str) -> List[DatabaseGetAllBase]:
@@ -70,8 +71,22 @@ class DatabaseService:
         databases = self._database_db.get_all_by_user_id(
             user_id=user_id,
         )
+        for database in databases:
+            self._update_status(database)
 
         return databases
+
+    def _update_status(self, database: Database) -> None:
+
+        database_k8s = DatabaseK8S(database=database)
+        database_status = database_k8s.get_database_deployment_status()
+        database_port = database_k8s.get_database_deployment_port()
+        self._database_db.update(
+            database_id=database.id,
+            status=database_status,
+            db_port=database_port,
+            db_host=settings.SERVER_ADDRESS,
+        )
 
     def delete(self, user_id: str, database_id: str) -> str:
 

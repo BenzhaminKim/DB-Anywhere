@@ -71,7 +71,7 @@ class DatabaseGetDetailOut(BaseModelORMTrue):
     db_password: str
     db_capacity: int
     db_port: Optional[int]  # TODO: 생성 후 만들어야함
-    db_address: Optional[str]  # TODO: 생성 후 만들어야함
+    db_host: Optional[str]  # TODO: 생성 후 만들어야함
     status: str
     created_at: datetime
 

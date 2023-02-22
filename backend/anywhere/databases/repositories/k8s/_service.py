@@ -5,6 +5,7 @@ from pathlib import Path
 from anywhere.common.kubernetes_client import KubernetesClient
 from anywhere.databases.model import Database
 from anywhere.common.config import settings
+from kubernetes.client.models import V1Service
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -45,3 +46,11 @@ class DatabaseK8SService(KubernetesClient):
 
         result = thread.get()
         return result.spec.ports[0].node_port
+
+    def get(self) -> V1Service:
+        result = self.v1_core.read_namespaced_service(
+            namespace=settings.NAMESPACE,
+            name=self.database.name_for_k8s,
+        )
+
+        return result

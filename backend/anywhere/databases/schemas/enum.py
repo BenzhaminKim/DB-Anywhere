@@ -8,6 +8,7 @@ class DatabaseStatus(StrEnum):
 
     processing = auto()
     ready = auto()
+    error = auto()
 
 
 class DatabaseType(StrEnum):

@@ -3,6 +3,7 @@ from string import Template
 import yaml
 from pathlib import Path
 from anywhere.common.kubernetes_client import KubernetesClient
+from kubernetes.client import ApiException
 from anywhere.databases.model import Database
 from anywhere.common.config import settings
 from kubernetes.client.models import V1Service
@@ -48,9 +49,12 @@ class DatabaseK8SService(KubernetesClient):
         return result.spec.ports[0].node_port
 
     def get(self) -> V1Service:
-        result = self.v1_core.read_namespaced_service(
-            namespace=settings.NAMESPACE,
-            name=self.database.name_for_k8s,
-        )
+        try:
+            result = self.v1_core.read_namespaced_service(
+                namespace=settings.NAMESPACE,
+                name=self.database.name_for_k8s,
+            )
 
-        return result
+            return result
+        except ApiException as e:
+            return None

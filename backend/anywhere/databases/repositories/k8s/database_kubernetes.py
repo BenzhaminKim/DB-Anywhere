@@ -33,6 +33,9 @@ class DatabaseK8S:
     def get_database_deployment_status(self) -> DatabaseStatus:
         deployment = self._deployment.get()
 
+        if deployment is None:
+            return DatabaseStatus.error
+
         if deployment.status.ready_replicas and deployment.status.ready_replicas == 1:
             return DatabaseStatus.ready
 
@@ -40,5 +43,8 @@ class DatabaseK8S:
 
     def get_database_deployment_port(self) -> int:
         service = self._service.get()
+
+        if service is None:
+            return 0
 
         return service.spec.ports[0].node_port if service.spec.ports[0].node_port else 0

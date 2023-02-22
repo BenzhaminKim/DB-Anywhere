@@ -1,5 +1,6 @@
 from kubernetes import client, config, watch
 from kubernetes.client.models import V1Deployment
+from kubernetes.client import ApiException
 import logging
 from string import Template
 import yaml
@@ -49,9 +50,12 @@ class DatabaseK8SDeployment(KubernetesClient):
         return result
 
     def get(self) -> V1Deployment:
-        result = self.v1_apps.read_namespaced_deployment(
-            name=self.database.name_for_k8s,
-            namespace=settings.NAMESPACE,
-        )
+        try:
+            result = self.v1_apps.read_namespaced_deployment(
+                name=self.database.name_for_k8s,
+                namespace=settings.NAMESPACE,
+            )
 
-        return result
+            return result
+        except ApiException as e:
+            return None

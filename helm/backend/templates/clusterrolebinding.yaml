@@ -10,5 +10,5 @@ roleRef:
   apiGroup: rbac.authorization.k8s.io
 subjects:
 - kind: ServiceAccount
-  name: default
+  name: {{ include "backend.serviceAccountName" . }}
   namespace: {{ .Release.Namespace }}

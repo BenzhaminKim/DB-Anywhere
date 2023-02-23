@@ -9,6 +9,9 @@ from anywhere.databases.model import Database
 from anywhere.databases.schemas.schema import DatabaseGetAllBase, DatabaseUpdateOut
 from anywhere.databases.repositories.k8s.database_kubernetes import DatabaseK8S
 from anywhere.common.config import settings
+from logging import getLogger
+
+logger = getLogger(__name__)
 
 
 class DatabaseService:
@@ -36,7 +39,7 @@ class DatabaseService:
         Raises
         ------
         """
-
+        logger.info("user_id: %s, database_create_in: %s", user_id, database_create_in)
         database = Database(
             user_id=user_id,
             name=database_create_in.name,

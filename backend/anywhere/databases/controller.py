@@ -1,3 +1,4 @@
+from logging import getLogger
 from typing import Any
 
 from fastapi import APIRouter, Depends
@@ -13,10 +14,14 @@ from anywhere.databases.schemas.schema import (
     DatabaseGetDetailOut,
     DatabaseUpdateIn,
 )
+from anywhere.common._logging import logging_dependency
+
+logger = getLogger(__name__)
 
 router = APIRouter(
     prefix="/databases",
     tags=["databases"],
+    dependencies=[Depends(logging_dependency)],
 )
 
 

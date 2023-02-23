@@ -12,10 +12,15 @@ from anywhere.users.services.user_service import UserService
 from anywhere.users.services.auth_service import jwtBearer, UserToken
 from anywhere.users.schemas.schema import UserGetOut, RefreshTokenOut
 from anywhere.users.const import REFRESH_TOKEN_KEY, TOKEN_TYPE, ACCESS_TOKEN_KEY
+from logging import config, getLogger
+from anywhere.common._logging import logging_dependency
+
+logger = getLogger(__name__)
 
 router = APIRouter(
     prefix="/users",
     tags=["users"],
+    dependencies=[Depends(logging_dependency)],
 )
 
 
@@ -50,7 +55,6 @@ async def login(
     """
     Login a user.
     """
-
     access_token, refresh_token = await user_service.login(user_login_in=user_login_in)
 
     response.set_cookie(

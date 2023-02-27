@@ -1,10 +1,14 @@
+import { Typography } from 'antd';
+
 import DatabasesList from './DatabasesList';
 import CreateDatabase from './CreateDatabase';
+
+const { Title } = Typography;
 
 const Databases = () => (
 	<div>
 		<div>
-			<h3>Databases:</h3>
+			<Title>h1. Ant Design</Title>
 			<CreateDatabase />
 		</div>
 		<DatabasesList />

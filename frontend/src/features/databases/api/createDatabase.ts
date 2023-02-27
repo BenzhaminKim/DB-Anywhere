@@ -6,17 +6,15 @@ import { MutationConfig, queryClient } from '@/lib/react-query';
 import { Database } from '../types';
 
 export type CreateDatabaseDTO = {
-	data: {
-		name: string;
-		type: string;
-		db_name: string;
-		db_user: string;
-		db_password: string;
-		db_capacity: number;
-	};
+	name: string;
+	type: string;
+	db_name: string;
+	db_user: string;
+	db_password: string;
+	db_capacity: number;
 };
 
-export const createDatabase = ({ data }: CreateDatabaseDTO): Promise<Database> => {
+export const createDatabase = (data: CreateDatabaseDTO): Promise<Database> => {
 	return axios.post('/v1/databases', data);
 };
 

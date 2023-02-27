@@ -1,4 +1,5 @@
 import { Spin, Table, Empty } from 'antd';
+import Link from '@/components/Elements/Link';
 import { formatDate } from '@/utils/format';
 
 import { useDatabases } from '../api/getDatabases';
@@ -9,15 +10,17 @@ export default function DatabasesList() {
 	if (databasesQuery.isLoading) {
 		return <Spin size="large" />;
 	}
-	if (!databasesQuery.data || !databasesQuery?.data?.length) return <Empty />;
+	if (!databasesQuery.data || !databasesQuery?.data?.databases.length) return <Empty />;
 	return (
 		<Table
-			dataSource={databasesQuery.data}
+			dataSource={databasesQuery?.data?.databases}
+			rowKey="id"
 			columns={[
 				{
 					title: 'Id',
 					dataIndex: 'id',
 					key: 'id',
+					render: (id: string) => <Link to={`./${id}`}>{id}</Link>,
 				},
 				{
 					title: 'Name',

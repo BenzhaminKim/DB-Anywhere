@@ -58,12 +58,14 @@ const colors = {
 	black: '#000000',
 };
 
+const backgroundColor = '#2498ff';
 const secondaryColors = {};
 const fontSizes: string[] = [];
 
 const theme = {
 	colors,
 	fontSizes,
+	backgroundColor,
 	secondaryColors,
 	media,
 };

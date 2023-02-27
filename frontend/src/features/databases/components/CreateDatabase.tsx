@@ -1,93 +1,87 @@
 import React, { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Col, DatePicker, Drawer, Form, Input, Row, Select, Space } from 'antd';
+import { Button, Form, Input, InputNumber, Modal, Select } from 'antd';
+
+import { CreateDatabaseDTO, useCreateDatabase } from '../api/createDatabase';
 
 const { Option } = Select;
 
 const App: React.FC = () => {
-	const [open, setOpen] = useState(false);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [form] = Form.useForm();
+	const createDatabaseMutation = useCreateDatabase();
 
-	const showDrawer = () => {
-		setOpen(true);
+	const showModal = () => {
+		setIsModalOpen(true);
 	};
 
-	const onClose = () => {
-		setOpen(false);
+	const handleCancel = () => {
+		setIsModalOpen(false);
+		form.resetFields();
 	};
+
+	const handleSubmit = (values: CreateDatabaseDTO) => {
+		console.log(values);
+		createDatabaseMutation.mutate(values);
+	};
+
+	if (createDatabaseMutation.isSuccess) {
+		setIsModalOpen(false);
+	}
 
 	return (
 		<>
-			<Button type="primary" onClick={showDrawer} icon={<PlusOutlined />}>
+			<Button type="primary" onClick={showModal} icon={<PlusOutlined />} loading={createDatabaseMutation.isLoading}>
 				New Database
 			</Button>
-			<Drawer
+			<Modal
 				title="Create a new database"
-				width={720}
-				onClose={onClose}
-				open={open}
-				bodyStyle={{ paddingBottom: 80 }}
-				extra={
-					<Space>
-						<Button onClick={onClose}>Cancel</Button>
-						<Button onClick={onClose} type="primary">
-							Submit
-						</Button>
-					</Space>
-				}
+				width={500}
+				open={isModalOpen}
+				onOk={form.submit}
+				onCancel={handleCancel}
+				confirmLoading={createDatabaseMutation.isLoading}
+				okText="Create"
 			>
-				<Form layout="vertical" hideRequiredMark>
-					<Row gutter={16}>
-						<Col span={12}>
-							<Form.Item name="name" label="Name" rules={[{ required: true, message: 'Please enter name' }]}>
-								<Input placeholder="Please enter name" />
-							</Form.Item>
-						</Col>
-						<Col span={12}>
-							<Form.Item name="type" label="Type" rules={[{ required: true, message: 'Please choose the type' }]}>
-								<Select placeholder="Please choose the type">
-									<Option value="postgres">PostgreSQL</Option>
-								</Select>
-							</Form.Item>
-						</Col>
-					</Row>
-					<Row gutter={16}>
-						<Col span={12}>
-							<Form.Item
-								name="db_name"
-								label="Database Name"
-								rules={[{ required: true, message: 'Please enter database name' }]}
-							>
-								<Input placeholder="Please enter database name" />
-							</Form.Item>
-						</Col>
-						<Col span={12}>
-							<Form.Item
-								name="db_user"
-								label="Database User"
-								rules={[{ required: true, message: 'Please enter database user' }]}
-							>
-								<Input placeholder="Please enter database user" />
-							</Form.Item>
-						</Col>
-					</Row>
-					<Row gutter={16}>
-						<Col span={24}>
-							<Form.Item
-								name="description"
-								label="Description"
-								rules={[
-									{
-										required: true,
-										message: 'please enter url description',
-									},
-								]}
-							>
-								<Input.TextArea rows={4} placeholder="please enter url description" />
-							</Form.Item>
-						</Col>
-					</Row>
+				<Form form={form} layout="vertical" onFinish={handleSubmit}>
+					<Form.Item name="name" label="Name" rules={[{ required: true, message: 'Please enter name' }]}>
+						<Input placeholder="Please enter name" />
+					</Form.Item>
+					<Form.Item name="type" label="Type" rules={[{ required: true, message: 'Please choose the type' }]}>
+						<Select placeholder="Please choose the type">
+							<Option value="postgres">PostgreSQL</Option>
+						</Select>
+					</Form.Item>
+					<Form.Item
+						name="db_name"
+						label="Database Name"
+						rules={[{ required: true, message: 'Please enter database name' }]}
+					>
+						<Input placeholder="Please enter database name" />
+					</Form.Item>
+					<Form.Item
+						name="db_user"
+						label="Database User"
+						rules={[{ required: true, message: 'Please enter database user' }]}
+					>
+						<Input placeholder="Please enter database user" />
+					</Form.Item>
+					<Form.Item
+						name="db_password"
+						label="Database Password"
+						rules={[{ required: true, message: 'Please enter database name' }]}
+					>
+						<Input.Password />
+					</Form.Item>
+					<Form.Item
+						name="db_capacity"
+						label="Database Capacity"
+						rules={[{ required: true, message: 'Please enter database capacity' }]}
+					>
+						<InputNumber style={{ width: '100%' }} />
+					</Form.Item>
 				</Form>
-			</Drawer>
+			</Modal>
 		</>
 	);
 };

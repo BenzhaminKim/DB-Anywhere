@@ -27,10 +27,8 @@ async function loginFn(data: LoginCredentialsDTO) {
 }
 
 async function registerFn(data: RegisterCredentialsDTO) {
-	const response = await registerWithEmailAndPassword(data);
-	storage.setToken(response.token);
-	const user = await userFn();
-	return user;
+	await registerWithEmailAndPassword(data);
+	return null;
 }
 
 async function logoutFn() {

@@ -1,6 +1,7 @@
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { isAxiosError } from 'axios';
 
 import { useRegister } from '@/lib/auth';
 import { RegisterCredentialsDTO } from '../api/register';
@@ -17,6 +18,7 @@ const formItemLayout = {
 };
 
 function RegisterForm() {
+	const navigate = useNavigate();
 	const registerMutation = useRegister();
 	const [form] = Form.useForm();
 
@@ -28,7 +30,18 @@ function RegisterForm() {
 			email,
 			password,
 		};
-		registerMutation.mutate(userInfo);
+
+		registerMutation.mutate(userInfo, {
+			onSuccess: () => {
+				message.success('Congratulations, your account has been successfully created.');
+				navigate('/auth/login');
+			},
+			onError: (error) => {
+				if (isAxiosError(error)) {
+					message.error(error.response.data.detail);
+				}
+			},
+		});
 	};
 
 	return (

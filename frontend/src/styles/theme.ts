@@ -58,7 +58,7 @@ const colors = {
 	black: '#000000',
 };
 
-const backgroundColor = '#2498ff';
+const backgroundColor = '#fbfbfd';
 const secondaryColors = {};
 const fontSizes: string[] = [];
 

@@ -19,6 +19,9 @@ const axios = Axios.create({
 	},
 });
 
+// TODO: Cookie 설정을 위한 영휘 님과 백엔드 논의 (이후 withCredentials 설정)
+// axios.defaults.withCredentials = true;
+
 axios.interceptors.request.use(authRequestInterceptor);
 axios.interceptors.response.use(
 	(response) => {

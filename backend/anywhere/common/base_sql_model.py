@@ -10,7 +10,6 @@ from sqlalchemy import create_engine, orm
 
 from sqlalchemy.orm import Session
 from sqlalchemy.ext.declarative import declarative_base
-from anywhere.common.singleton import singleton
 from anywhere.common.config import settings
 
 
@@ -19,7 +18,6 @@ logger = logging.getLogger(__name__)
 Base = declarative_base()
 
 
-@singleton
 class DatabaseConnection:
     """Database"""
 

@@ -6,8 +6,12 @@ from fastapi import HTTPException
 from anywhere.databases.repositories.db import DatabaseDB
 from anywhere.databases.schemas.schema import DatabaseCreateIn
 from anywhere.databases.model import Database
-from anywhere.databases.schemas.schema import DatabaseGetAllBase
+from anywhere.databases.schemas.schema import DatabaseGetAllBase, DatabaseUpdateOut
 from anywhere.databases.repositories.k8s.database_kubernetes import DatabaseK8S
+from anywhere.common.config import settings
+from logging import getLogger
+
+logger = getLogger(__name__)
 
 
 class DatabaseService:
@@ -16,7 +20,7 @@ class DatabaseService:
     def __init__(self) -> None:
         self._database_db = DatabaseDB()
 
-    async def create(
+    def create(
         self,
         user_id: str,
         database_create_in: DatabaseCreateIn,
@@ -35,7 +39,7 @@ class DatabaseService:
         Raises
         ------
         """
-
+        logger.info("user_id: %s, database_create_in: %s", user_id, database_create_in)
         database = Database(
             user_id=user_id,
             name=database_create_in.name,
@@ -46,36 +50,50 @@ class DatabaseService:
             db_capacity=database_create_in.db_capacity,
         )
 
-        database = await self._database_db.add(database)
+        database = self._database_db.add(database)
 
         database_k8s = DatabaseK8S(database=database)
-        await database_k8s.create_database_k8s()
+        database_k8s.create_database_k8s()
 
         return database
 
-    async def get(self, user_id: str, database_id: str) -> Database:
+    def get(self, user_id: str, database_id: str) -> Database:
 
-        database = await self._database_db.get(
+        database = self._database_db.get(
             user_id=user_id,
             database_id=database_id,
         )
 
         if not database:
             raise HTTPException(status_code=404, detail="Database is not found")
-        #TODO: 상태 업데이트, NodePort 업데이트
+        self._update_status(database)
         return database
 
-    async def get_all(self, user_id: str) -> List[DatabaseGetAllBase]:
+    def get_all(self, user_id: str) -> List[DatabaseGetAllBase]:
 
-        databases = await self._database_db.get_all_by_user_id(
+        databases = self._database_db.get_all_by_user_id(
             user_id=user_id,
         )
+        for database in databases:
+            self._update_status(database)
 
         return databases
 
-    async def delete(self, user_id: str, database_id: str) -> str:
+    def _update_status(self, database: Database) -> None:
 
-        database = await self._database_db.get(
+        database_k8s = DatabaseK8S(database=database)
+        database_status = database_k8s.get_database_deployment_status()
+        database_port = database_k8s.get_database_deployment_port()
+        self._database_db.update(
+            database_id=database.id,
+            status=database_status,
+            db_port=database_port,
+            db_host=settings.SERVER_ADDRESS,
+        )
+
+    def delete(self, user_id: str, database_id: str) -> str:
+
+        database = self._database_db.get(
             user_id=user_id,
             database_id=database_id,
         )
@@ -88,6 +106,32 @@ class DatabaseService:
                 status_code=400, detail="Not allowed to delete the database."
             )
 
-        await self._database_db.delete(database_id=database_id)
+        self._database_db.delete(database_id=database_id)
 
         return database_id
+
+    def update(
+        self,
+        user_id: str,
+        database_id: str,
+        database_update_in: DatabaseUpdateOut,
+    ) -> Database:
+        database = self._database_db.get(user_id=user_id, database_id=database_id)
+
+        if not database:
+            raise HTTPException(status_code=404, detail="Database is not found")
+
+        if str(database.user_id) != user_id:
+            raise HTTPException(
+                status_code=400, detail="Not allowed to delete the database."
+            )
+
+        self._database_db.update(
+            database_id=database_id,
+            name=database_update_in.name,
+        )
+
+        updated_database = self._database_db.get(
+            user_id=user_id, database_id=database_id
+        )
+        return updated_database

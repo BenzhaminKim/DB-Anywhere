@@ -13,6 +13,7 @@ from anywhere.databases.model import Database
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 class DatabaseDB:
     """
     DatabaseDB
@@ -27,7 +28,7 @@ class DatabaseDB:
     ) -> None:
         self.session_factory = session_factory
 
-    async def add(self, database: Database) -> Database:
+    def add(self, database: Database) -> Database:
         """
         create a database
         """
@@ -38,7 +39,7 @@ class DatabaseDB:
 
         return database
 
-    async def get(self, user_id: str, database_id: Database) -> Database:
+    def get(self, user_id: str, database_id: Database) -> Database:
         """
         get a database
         """
@@ -54,20 +55,24 @@ class DatabaseDB:
 
         return result.scalars().one_or_none()
 
-    async def get_all_by_user_id(self, user_id: str) -> List[Database]:
+    def get_all_by_user_id(self, user_id: str) -> List[Database]:
         """
         get all databases for a user
         """
         with self.session_factory() as session:
-            stmt = select(Database).where(
-                Database.user_id == user_id,
+            stmt = (
+                select(Database)
+                .where(
+                    Database.user_id == user_id,
+                )
+                .order_by(Database.created_at.desc())
             )
 
             result = session.execute(stmt)
 
         return result.scalars().unique().all()
 
-    async def delete(self, database_id: str) -> None:
+    def delete(self, database_id: str) -> None:
         """
         delete a database
         """
@@ -76,3 +81,15 @@ class DatabaseDB:
             stmt = delete(Database).where(Database.id == database_id)
             session.execute(stmt)
             session.commit()
+
+    def update(
+        self,
+        database_id: int,
+        **kwargs,
+    ) -> None:
+        """update project form db."""
+
+        with self.session_factory() as session:
+            stmt = update(Database).where(Database.id == database_id).values(**kwargs)
+
+            session.execute(stmt)

@@ -10,11 +10,17 @@ from anywhere.users.schemas.schema import (
 )
 from anywhere.users.services.user_service import UserService
 from anywhere.users.services.auth_service import jwtBearer, UserToken
-from anywhere.users.schemas.schema import UserGetOut
+from anywhere.users.schemas.schema import UserGetOut, RefreshTokenOut
+from anywhere.users.const import REFRESH_TOKEN_KEY, TOKEN_TYPE, ACCESS_TOKEN_KEY
+from logging import config, getLogger
+from anywhere.common._logging import logging_dependency
+
+logger = getLogger(__name__)
 
 router = APIRouter(
     prefix="/users",
     tags=["users"],
+    dependencies=[Depends(logging_dependency)],
 )
 
 
@@ -31,6 +37,15 @@ async def create_user(
     return UserRegisterOut.from_orm(user)
 
 
+@router.get("/refresh", response_model=RefreshTokenOut)
+async def refresh(
+    user_token: UserToken = Depends(jwtBearer.validate_refresh_token_request),
+    user_service: UserService = Depends(),
+):
+    access_token = user_service.create_access_token(user_token.user_id)
+    return RefreshTokenOut(token=access_token)
+
+
 @router.post("/login", response_model=UserLoginOut)
 async def login(
     user_login_in: UserLoginIn,
@@ -40,15 +55,15 @@ async def login(
     """
     Login a user.
     """
-
-    login_out = await user_service.login(user_login_in=user_login_in)
+    access_token, refresh_token = await user_service.login(user_login_in=user_login_in)
 
     response.set_cookie(
-        key="Authorization",
-        value=f"Bearer {login_out.token}",
+        key=REFRESH_TOKEN_KEY,
+        value=f"{TOKEN_TYPE} {refresh_token}",
         httponly=True,
+        samesite="none",
     )
-    return login_out
+    return UserLoginOut(token=access_token)
 
 
 @router.post(

@@ -1,6 +1,6 @@
 import asyncio
-import datetime
-from typing import List, Optional, Union
+from datetime import datetime, timedelta
+from typing import List, Optional, Tuple, Union
 from fastapi import HTTPException
 
 from jose import jwt
@@ -9,7 +9,13 @@ from anywhere.users.model import User
 from anywhere.users.schemas.schema import UserRegisterIn
 from anywhere.users.repository import UserDB
 from anywhere.users.schemas.schema import UserLoginIn, UserLoginOut
-from anywhere.users.services.auth_service import ALGORITHM, SECRET_KEY, UserToken
+from anywhere.users.services.auth_service import (
+    ALGORITHM,
+    ACCESS_TOKEN_SECRET_KEY,
+    REFRESH_TOKEN_SECRET_KEY,
+    UserToken,
+)
+from anywhere.users.const import ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY, TOKEN_TYPE
 
 
 class UserService:
@@ -63,7 +69,7 @@ class UserService:
         if user_exists:
             raise HTTPException(status_code=400, detail="The email already exists")
 
-    async def login(self, user_login_in: UserLoginIn) -> UserLoginOut:
+    async def login(self, user_login_in: UserLoginIn) -> Tuple[str, str]:
         """
         Verify passed email, password and
         generate access token if these are valid
@@ -79,8 +85,9 @@ class UserService:
         if not is_valid_user:
             raise HTTPException(status_code=400, detail="INVALID_USERNAME_OR_PASSWORD")
 
-        token = self._encode_token(user.id)
-        return UserLoginOut(user_id=user.id, token=token)
+        access_token = self.create_access_token(user.id)
+        refresh_token = self.create_refresh_token(user.id)
+        return access_token, refresh_token
 
     async def get(self, id: str) -> User:
         """User의 정보를 가져옵니다."""
@@ -89,6 +96,47 @@ class UserService:
             raise HTTPException(status_code=404, detail="USER_NOT_FOUND")
 
         return user
+
+    def create_access_token(self, user_id: int) -> str:
+        """It creates an access token
+
+        Parameters
+        ----------
+        user_id : int
+            user id
+
+        Returns
+        -------
+        str
+            access token
+        """
+        expire_date = datetime.utcnow() + timedelta(
+            minutes=60,
+        )
+        access_token = self._encode_token(
+            user_id=user_id,
+            expire_date=expire_date,
+            secret_key=ACCESS_TOKEN_SECRET_KEY,
+        )
+        return access_token
+
+    def create_refresh_token(self, user_id: int) -> str:
+        """It creates a refresh token
+
+        Returns
+        -------
+        str
+            refresh token
+        """
+        expire_date = datetime.utcnow() + timedelta(
+            days=1,
+        )
+        refresh_token = self._encode_token(
+            user_id=user_id,
+            expire_date=expire_date,
+            secret_key=REFRESH_TOKEN_SECRET_KEY,
+        )
+        return refresh_token
 
     @staticmethod
     def _confirm_password(new_password: str, confirm_password: str) -> bool:
@@ -127,15 +175,14 @@ class UserService:
     def _encode_token(
         cls,
         user_id: str,
+        expire_date: datetime,
+        secret_key: str,
     ) -> str:
         """
         유저의 정보를 담고 있는 data 를 받아서 access token 을 반환한다.
         """
-        date_time = datetime.datetime.utcnow() + datetime.timedelta(
-            days=1,
-        )
-        payload = cls._make_payload(user_id, str(date_time))
-        encoded_jwt = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
+        payload = cls._make_payload(user_id, str(expire_date))
+        encoded_jwt = jwt.encode(payload, secret_key, algorithm=ALGORITHM)
 
         return encoded_jwt
 

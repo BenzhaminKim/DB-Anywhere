@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: backend
+data:
+  POSTGRES_SERVER: "db-anywhere-postgres.anywhere"
+  POSTGRES_USER: "anywhere"
+  POSTGRES_PASSWORD: "anywhere"
+  POSTGRES_DB: "anywhere"
+  POSTGRES_PORT: "5432"
+  ACCESS_TOKEN_SECRET_KEY: "23bea949a01c50a8b95914076e6cbd6fd0963793358511c90e94c89260918d5d"
+  REFRESH_TOKEN_SECRET_KEY: "d0963793358511c90e94c89260918d5d"
+  NAMESPACE: "anywhere"
+  SIGNATURE: "db-anywhere"
+  SERVER_ADDRESS: "3.92.239.238"

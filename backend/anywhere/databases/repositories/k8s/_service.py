@@ -3,8 +3,10 @@ from string import Template
 import yaml
 from pathlib import Path
 from anywhere.common.kubernetes_client import KubernetesClient
+from kubernetes.client import ApiException
 from anywhere.databases.model import Database
 from anywhere.common.config import settings
+from kubernetes.client.models import V1Service
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -35,7 +37,7 @@ class DatabaseK8SService(KubernetesClient):
         yaml_dict = yaml.safe_load(yaml_str)
         return yaml_dict
 
-    async def create(self) -> int:
+    def create(self) -> int:
         body = self.yaml
         thread = self.v1_core.create_namespaced_service(
             namespace=settings.NAMESPACE,
@@ -45,3 +47,14 @@ class DatabaseK8SService(KubernetesClient):
 
         result = thread.get()
         return result.spec.ports[0].node_port
+
+    def get(self) -> V1Service:
+        try:
+            result = self.v1_core.read_namespaced_service(
+                namespace=settings.NAMESPACE,
+                name=self.database.name_for_k8s,
+            )
+
+            return result
+        except ApiException as e:
+            return None

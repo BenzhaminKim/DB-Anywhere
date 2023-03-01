@@ -60,8 +60,12 @@ class DatabaseDB:
         get all databases for a user
         """
         with self.session_factory() as session:
-            stmt = select(Database).where(
-                Database.user_id == user_id,
+            stmt = (
+                select(Database)
+                .where(
+                    Database.user_id == user_id,
+                )
+                .order_by(Database.created_at.desc())
             )
 
             result = session.execute(stmt)
@@ -89,4 +93,3 @@ class DatabaseDB:
             stmt = update(Database).where(Database.id == database_id).values(**kwargs)
 
             session.execute(stmt)
-            session.commit()

@@ -27,7 +27,7 @@ class DatabaseCreateIn(BaseModelORMTrue):
     db_name: str
     db_user: str
     db_password: str
-    db_capacity: int  # TODO: 특정 타입으로만 capacity 할 수 있도록 변경.
+    db_capacity: int = Query(default=1, gt=0, lt=3)
 
 
 class DatabaseCreateOut(BaseModelORMTrue):

@@ -1,2 +1,2 @@
-export const API_URL = import.meta.env.VITE_API_URL as string;
-export const API_MOCKING = import.meta.env.VITE_API_MOCKING as boolean;
+export const API_URL = 'http://localhost:3000';
+export const API_MOCKING = false;

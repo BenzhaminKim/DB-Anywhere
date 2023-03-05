@@ -14,9 +14,7 @@ function authRequestInterceptor(config: AxiosRequestConfig) {
 
 const axios = Axios.create({
 	baseURL: API_URL,
-	headers: {
-		'Content-Type': 'application/json',
-	},
+	// withCredentials: true,
 });
 
 // TODO: Cookie 설정을 위한 영휘 님과 백엔드 논의 (이후 withCredentials 설정)

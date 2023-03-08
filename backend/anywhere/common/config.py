@@ -14,11 +14,12 @@ class Settings(BaseSettings):
     POSTGRES_PASSWORD: str
     POSTGRES_DB: str
 
-    SECRET_KEY: str
+    ACCESS_TOKEN_SECRET_KEY: str
+    REFRESH_TOKEN_SECRET_KEY: str
 
     NAMESPACE: str = "anywhere"
     SIGNATURE: str = "db-anywhere"
-
+    SERVER_ADDRESS: str = "localhost"
     class Config:
         env_file = "./.env"
 
@@ -60,7 +61,7 @@ class Settings(BaseSettings):
             user=values.get("POSTGRES_USER"),
             password=values.get("POSTGRES_PASSWORD"),
             host=values.get("POSTGRES_SERVER"),
-            port=values.get("POStGRES_PORT"),
+            port=values.get("POSTGRES_PORT"),
             path=f"/{values.get('POSTGRES_DB') or ''}",
         )
 

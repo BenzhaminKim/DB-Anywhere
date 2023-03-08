@@ -1,0 +1,46 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: "{{ include "backend.name" . }}-{{ .Release.Namespace }}"
+  labels:
+    {{- include "backend.labels" . | nindent 4 }}
+rules:
+- apiGroups:
+  - apps
+  resources:
+  - statefulsets
+  - deployments
+  - deployments/scale
+  verbs:
+  - '*'
+- apiGroups:
+  - v1
+  resources:
+  - services
+  verbs:
+  - '*'
+- apiGroups:
+  - ""
+  resources:
+  - persistentvolumeclaims
+  - persistentvolumes
+  verbs:
+  - create
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - pods/exec
+  - secrets
+  - configmaps
+  verbs:
+  - '*'
+- apiGroups:
+  - ""
+  resources:
+  - services
+  verbs:
+  - '*'

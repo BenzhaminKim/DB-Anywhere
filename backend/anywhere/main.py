@@ -1,3 +1,8 @@
+import os
+import sys
+import types
+from logging import config, getLogger
+from pathlib import Path
 from fastapi import FastAPI
 from anywhere.common.config import settings
 from anywhere.users.controller import router as users_router
@@ -7,8 +12,15 @@ from fastapi.middleware.cors import CORSMiddleware
 import logging
 import sys
 
+main_path = Path(os.path.abspath(__file__))
+os.chdir(main_path.parent)
+print(main_path.parent)
+log_file_path = main_path.parent / "logging.conf"
+config.fileConfig(log_file_path, disable_existing_loggers=False)
 
-logger = logging.getLogger(__name__)
+logger = getLogger(__name__)
+
+logger.debug("start")
 
 
 db = DatabaseConnection()

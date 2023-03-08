@@ -40,6 +40,12 @@ class UserLoginIn(BaseModelORMTrue):
     password: str
 
 
+class BaseToken(BaseModelORMTrue):
+    token: str
+    token_key: str
+    token_type: str
+
+
 class UserLoginOut(BaseModelORMTrue):
     """User Login Output DTO"""
 
@@ -70,3 +76,9 @@ class UserGetOut(BaseModelORMTrue):
         """
         user.id = str(user.id)
         return super().from_orm(user)
+
+
+class RefreshTokenOut(BaseModelORMTrue):
+    """Refresh Token DTO"""
+
+    token: str

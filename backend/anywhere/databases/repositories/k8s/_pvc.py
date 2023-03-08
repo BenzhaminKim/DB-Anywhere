@@ -38,7 +38,7 @@ class DatabaseK8SPVC(KubernetesClient):
         yaml_dict = yaml.safe_load(yaml_str)
         return yaml_dict
 
-    async def create(self):
+    def create(self):
         body = self.yaml
         thread = self.v1_core.create_namespaced_persistent_volume_claim(
             namespace=settings.NAMESPACE,

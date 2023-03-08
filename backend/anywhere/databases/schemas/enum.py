@@ -1,20 +1,21 @@
-from enum import Enum, auto
+from anywhere.common._enum import auto, StrEnum
 
 
-class DatabaseStatus(Enum):
+class DatabaseStatus(StrEnum):
     """
     DatabaseStatus
     """
 
-    processing = "processing"
-    ready = "ready"
+    processing = auto()
+    ready = auto()
+    error = auto()
 
 
-class DatabaseType(Enum):
+class DatabaseType(StrEnum):
     """
     DatabaseType
     """
 
-    postgres = "postgres"
-    mysql = "mysql"
-    mongodb = "mongodb"
+    postgres = auto()
+    mysql = auto()
+    mongodb = auto()

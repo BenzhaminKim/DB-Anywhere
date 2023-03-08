@@ -23,11 +23,11 @@ class DatabaseCreateIn(BaseModelORMTrue):
     """Database Create Input DTO"""
 
     name: str
-    type: str
+    type: DatabaseType
     db_name: str
     db_user: str
     db_password: str
-    db_capacity: int  # TODO: 특정 타입으로만 capacity 할 수 있도록 변경.
+    db_capacity: int = Query(default=1, gt=0, lt=3)
 
 
 class DatabaseCreateOut(BaseModelORMTrue):
@@ -71,7 +71,7 @@ class DatabaseGetDetailOut(BaseModelORMTrue):
     db_password: str
     db_capacity: int
     db_port: Optional[int]  # TODO: 생성 후 만들어야함
-    db_address: Optional[str]  # TODO: 생성 후 만들어야함
+    db_host: Optional[str]  # TODO: 생성 후 만들어야함
     status: str
     created_at: datetime
 
@@ -93,7 +93,7 @@ class DatabaseGetDetailOut(BaseModelORMTrue):
         return super().from_orm(database)
 
 
-class DatabaseGetAllBase(DatabaseCreateOut):
+class DatabaseGetAllBase(DatabaseGetDetailOut):
     """DatabaseGetAllBase"""
 
     ...
@@ -124,3 +124,11 @@ class DatabaseDeleteOut(BaseModelORMTrue):
         """
         database.id = str(database.id)
         return super().from_orm(database)
+
+
+class DatabaseUpdateIn(BaseModelORMTrue):
+    name: str
+
+
+class DatabaseUpdateOut(DatabaseCreateOut):
+    ...

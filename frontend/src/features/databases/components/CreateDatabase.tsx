@@ -11,27 +11,28 @@ const App: React.FC = () => {
 	const [form] = Form.useForm();
 	const createDatabaseMutation = useCreateDatabase();
 
-	const showModal = () => {
-		setIsModalOpen(true);
-	};
-
 	const handleCancel = () => {
 		setIsModalOpen(false);
 		form.resetFields();
 	};
 
-	const handleSubmit = (values: CreateDatabaseDTO) => {
-		console.log(values);
-		createDatabaseMutation.mutate(values);
+	const handleSubmit = async (values: CreateDatabaseDTO) => {
+		await createDatabaseMutation.mutate(values, {
+			onSuccess: () => {
+				console.log('SUCCESS');
+			},
+		});
+		handleCancel();
 	};
-
-	if (createDatabaseMutation.isSuccess) {
-		setIsModalOpen(false);
-	}
 
 	return (
 		<>
-			<Button type="primary" onClick={showModal} icon={<PlusOutlined />} loading={createDatabaseMutation.isLoading}>
+			<Button
+				type="primary"
+				onClick={() => setIsModalOpen(true)}
+				icon={<PlusOutlined />}
+				loading={createDatabaseMutation.isLoading}
+			>
 				New Database
 			</Button>
 			<Modal
@@ -39,7 +40,7 @@ const App: React.FC = () => {
 				width={500}
 				open={isModalOpen}
 				onOk={form.submit}
-				onCancel={handleCancel}
+				onCancel={() => handleCancel()}
 				confirmLoading={createDatabaseMutation.isLoading}
 				okText="Create"
 			>

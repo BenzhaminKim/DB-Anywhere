@@ -4,13 +4,15 @@
 const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+require('dotenv').config();
+
 
 // const isDevelopment = process.env.NODE_ENV !== 'production';
-const PORT = 3000;
-const BACKEND_HOST = '3.92.239.238';
-const BACKEND_PORT = 32600;
+const PORT =  process.env.PORT || 3000;
+const BACKEND_HOST = process.env.BACKEND_HOST || '3.92.239.238';
+const BACKEND_PORT = process.env.BACKEND_PORT || 32600;
 
-module.exports = (env, argv) => {
+module.exports = () => {
   return {
     entry: './src/main.tsx',
     stats: 'minimal',
@@ -53,6 +55,9 @@ module.exports = (env, argv) => {
       ],
     },
     plugins: [
+      new webpack.DefinePlugin({
+        'process.env.API_URL': JSON.stringify("http://localhost:"+process.env.PORT),
+      }),
       new HtmlWebpackPlugin({
         template: path.resolve(__dirname, 'public', 'index.html'),
         hash: true,

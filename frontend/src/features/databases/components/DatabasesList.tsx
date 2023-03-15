@@ -1,18 +1,15 @@
-import { Spin, Table, Empty } from 'antd';
+import { Spin, Table, Empty, Space, Divider, Popconfirm } from 'antd';
 import Link from '@/components/Elements/Link';
 import { formatDate } from '@/utils/format';
 
 import { useDatabases } from '../api/getDatabases';
+import DeleteDatabase from './DeleteDatabase';
 
 export default function DatabasesList() {
 	const databasesQuery = useDatabases();
-
-	if (databasesQuery.isLoading) {
-		return <Spin size="large" />;
-	}
-	if (!databasesQuery.data || !databasesQuery?.data?.databases.length) return <Empty />;
 	return (
 		<Table
+			loading={databasesQuery.isLoading}
 			dataSource={databasesQuery?.data?.databases}
 			rowKey="id"
 			columns={[
@@ -57,6 +54,16 @@ export default function DatabasesList() {
 					dataIndex: 'created_at',
 					key: 'created_at',
 					render: (time) => formatDate(time),
+				},
+				{
+					title: 'Action',
+					key: 'action',
+					render: (_, row) => (
+						<Space size="middle" split={<Divider type="vertical" />}>
+							<a>Edit</a>
+							<DeleteDatabase databaseId={row.id} />
+						</Space>
+					),
 				},
 			]}
 		/>

@@ -2,7 +2,7 @@ import { useParams } from 'react-router-dom';
 import Head from '@/components/Head';
 
 import { useDatabase } from '../api/getDatabase';
-import { Descriptions, Spin } from 'antd';
+import { Descriptions, Skeleton } from 'antd';
 
 export const Database = () => {
 	const { databaseId } = useParams();
@@ -11,7 +11,7 @@ export const Database = () => {
 	if (!databaseId) return null;
 
 	if (databaseQuery.isLoading) {
-		return <Spin />;
+		return <Skeleton active />;
 	}
 
 	const database = databaseQuery.data;

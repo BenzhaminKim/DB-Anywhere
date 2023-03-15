@@ -10,6 +10,7 @@ export default defineConfig({
 		},
 	},
 	server: {
+		host: '0.0.0.0',
 		proxy: {
 			'/v1': {
 				target: 'http://3.92.239.238:32600',

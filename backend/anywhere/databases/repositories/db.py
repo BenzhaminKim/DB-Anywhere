@@ -1,6 +1,6 @@
 from contextlib import AbstractAsyncContextManager, AbstractContextManager
 from typing import Any, Callable, List, Optional, Tuple, Union
-
+from sqlalchemy.sql import func
 from sqlalchemy import and_, asc, delete, desc, or_, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
@@ -71,6 +71,19 @@ class DatabaseDB:
             result = session.execute(stmt)
 
         return result.scalars().unique().all()
+
+    def get_total_capacity_by_user_id(self, user_id: str) -> int:
+        """
+        get current databases capacity for a user
+        """
+        with self.session_factory() as session:
+            stmt = select(func.sum(Database.db_capacity)).where(
+                Database.user_id == user_id,
+            )
+
+            result = session.execute(stmt)
+
+        return result.scalar_one()
 
     def delete(self, database_id: str) -> None:
         """

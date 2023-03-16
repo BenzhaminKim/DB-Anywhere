@@ -20,6 +20,9 @@ class Settings(BaseSettings):
     NAMESPACE: str = "anywhere"
     SIGNATURE: str = "db-anywhere"
     SERVER_ADDRESS: str = "localhost"
+
+    DB_TOTAL_CAPACITY: int
+
     class Config:
         env_file = "./.env"
 

@@ -48,3 +48,6 @@ class DatabaseK8S:
             return 0
 
         return service.spec.ports[0].node_port if service.spec.ports[0].node_port else 0
+
+    def delete_database_k8s(self) -> None:
+        self._deployment.delete()

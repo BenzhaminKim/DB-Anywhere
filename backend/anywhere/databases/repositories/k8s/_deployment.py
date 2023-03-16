@@ -58,4 +58,15 @@ class DatabaseK8SDeployment(KubernetesClient):
 
             return result
         except ApiException as e:
+            logger.exception(e)
+            return None
+
+    def delete(self):
+
+        try:
+            self.v1_apps.delete_namespaced_deployment(
+                name=self.database.name_for_k8s, namespace=settings.NAMESPACE
+            )
+        except ApiException as e:
+            logger.exception(e)
             return None

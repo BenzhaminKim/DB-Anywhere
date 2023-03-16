@@ -13,6 +13,7 @@ from anywhere.databases.schemas.schema import (
     DatabaseGetAllOut,
     DatabaseGetDetailOut,
     DatabaseUpdateIn,
+    DatabaseCapacityGetOut,
 )
 from anywhere.common._logging import logging_dependency
 
@@ -58,6 +59,22 @@ def get_database(
     )
 
     return DatabaseGetDetailOut.from_orm(database)
+
+
+@router.get("/capacity", response_model=DatabaseCapacityGetOut)
+def get_current_capacity(
+    user_token: UserToken = Depends(jwtBearer),
+    database_service: DatabaseService = Depends(),
+) -> DatabaseCapacityGetOut:
+    """
+    Get a database detail
+    """
+
+    database_capacity_get_out = database_service.get_current_capacity(
+        user_id=user_token.user_id,
+    )
+
+    return database_capacity_get_out
 
 
 @router.get("", response_model=DatabaseGetAllOut)

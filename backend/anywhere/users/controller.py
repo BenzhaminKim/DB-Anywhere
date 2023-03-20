@@ -37,7 +37,7 @@ async def create_user(
     return UserRegisterOut.from_orm(user)
 
 
-@router.get("/refresh", response_model=RefreshTokenOut)
+@router.post("/refresh", response_model=RefreshTokenOut)
 async def refresh(
     user_token: UserToken = Depends(jwtBearer.validate_refresh_token_request),
     user_service: UserService = Depends(),

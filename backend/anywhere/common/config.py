@@ -7,7 +7,7 @@ from pydantic import AnyHttpUrl, BaseSettings, EmailStr, HttpUrl, PostgresDsn, v
 
 class Settings(BaseSettings):
 
-    API_V1_STR: str = "/v1"
+    API_V1_STR: str = "v1"
 
     POSTGRES_SERVER: str
     POSTGRES_USER: str

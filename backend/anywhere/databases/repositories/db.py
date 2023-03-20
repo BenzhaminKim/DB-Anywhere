@@ -83,7 +83,8 @@ class DatabaseDB:
 
             result = session.execute(stmt)
 
-        return result.scalar_one()
+            total_capacity = result.scalar_one()
+            return total_capacity if total_capacity else 0
 
     def delete(self, database_id: str) -> None:
         """

@@ -46,6 +46,7 @@ class DatabaseService:
         current_total_capacity = self._database_db.get_total_capacity_by_user_id(
             user_id=user_id
         )
+
         if (
             current_total_capacity + database_create_in.db_capacity
             > settings.DB_TOTAL_CAPACITY

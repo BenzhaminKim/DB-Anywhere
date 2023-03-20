@@ -1,32 +1,22 @@
-import secrets
-from typing import Any, Dict, List, Optional, Union
-from dotenv import load_dotenv
+from typing import Any, Dict, Optional
 
-from pydantic import AnyHttpUrl, BaseSettings, EmailStr, HttpUrl, PostgresDsn, validator
+from pydantic import BaseSettings, PostgresDsn, validator
 
 
 class Settings(BaseSettings):
-
-    API_V1_STR: str = "v1"
-
-    POSTGRES_SERVER: str
-    POSTGRES_USER: str
-    POSTGRES_PASSWORD: str
-    POSTGRES_DB: str
-
-    ACCESS_TOKEN_SECRET_KEY: str
-    REFRESH_TOKEN_SECRET_KEY: str
-
     NAMESPACE: str = "anywhere"
-    SIGNATURE: str = "db-anywhere"
-    SERVER_ADDRESS: str = "localhost"
 
-    DB_TOTAL_CAPACITY: int
-
-    class Config:
-        env_file = "./.env"
+    POSTGRES_SERVER: str = "127.0.0.1"
+    POSTGRES_USER: str = "anywhere"
+    POSTGRES_PASSWORD: str = "anywhere"
+    POSTGRES_DB: str = "anywhere"
+    POSTGRES_PORT: str = "5432"
 
     SQLALCHEMY_DATABASE_URI: Optional[PostgresDsn] = None
+
+    class Config:
+        case_sensitive = False
+
 
     @validator("SQLALCHEMY_DATABASE_URI", pre=True)
     def assemble_db_connection(cls, v: Optional[str], values: Dict[str, Any]) -> Any:
@@ -41,4 +31,5 @@ class Settings(BaseSettings):
             path=f"/{values.get('POSTGRES_DB') or ''}",
         )
     
+
 settings = Settings()

@@ -39,13 +39,11 @@ class DatabaseK8SService(KubernetesClient):
 
     def create(self) -> int:
         body = self.yaml
-        thread = self.v1_core.create_namespaced_service(
+        result = self.v1_core.create_namespaced_service(
             namespace=settings.NAMESPACE,
             body=body,
-            async_req=True,
         )
 
-        result = thread.get()
         return result.spec.ports[0].node_port
 
     def get(self) -> V1Service:
@@ -57,4 +55,14 @@ class DatabaseK8SService(KubernetesClient):
 
             return result
         except ApiException as e:
+            return None
+
+    def delete(self) -> None:
+        try:
+            self.v1_core.delete_namespaced_service(
+                name=self.database.name_for_k8s,
+                namespace=settings.NAMESPACE,
+            )
+        except ApiException as e:
+            logger.exception(e)
             return None

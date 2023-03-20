@@ -17,6 +17,7 @@ spec:
       labels:
         app: $DATABASE_NAME
         signature: $SIGNATURE
+        database-uuid: $DATABASE_UUID
     spec:
       containers:
         - name: postgres
@@ -37,4 +38,4 @@ spec:
       volumes:
         - name: postgredb
           persistentVolumeClaim:
-            claimName: $DATABASE_NAME-pvc
+            claimName: $DATABASE_NAME

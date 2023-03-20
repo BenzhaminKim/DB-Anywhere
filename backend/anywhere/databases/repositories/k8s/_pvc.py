@@ -1,5 +1,5 @@
 from kubernetes import client, config, watch
-from kubernetes.client.models import V1Deployment
+from kubernetes.client import ApiException
 import logging
 from string import Template
 import yaml
@@ -40,10 +40,19 @@ class DatabaseK8SPVC(KubernetesClient):
 
     def create(self):
         body = self.yaml
-        thread = self.v1_core.create_namespaced_persistent_volume_claim(
+        result = self.v1_core.create_namespaced_persistent_volume_claim(
             namespace=settings.NAMESPACE,
             body=body,
-            async_req=True,
         )
-        result = thread.get()
+
         return result
+
+    def delete(self) -> None:
+        try:
+            self.v1_core.delete_namespaced_persistent_volume_claim(
+                name=self.database.name_for_k8s,
+                namespace=settings.NAMESPACE,
+            )
+        except ApiException as e:
+            logger.exception(e)
+            return None

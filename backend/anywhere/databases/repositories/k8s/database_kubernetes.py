@@ -51,3 +51,5 @@ class DatabaseK8S:
 
     def delete_database_k8s(self) -> None:
         self._deployment.delete()
+        self._service.delete()
+        self._pvc.delete()

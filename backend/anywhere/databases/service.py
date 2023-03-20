@@ -65,6 +65,7 @@ class DatabaseService:
             db_user=database_create_in.db_user,
             db_password=database_create_in.db_password,
             db_capacity=database_create_in.db_capacity,
+            db_host=settings.SERVER_ADDRESS,
         )
 
         database = self._database_db.add(database)
@@ -101,8 +102,6 @@ class DatabaseService:
         databases = self._database_db.get_all_by_user_id(
             user_id=user_id,
         )
-        for database in databases:
-            self._update_status(database)
 
         return databases
 

@@ -31,7 +31,7 @@ except Exception as e:  # pylint: disable=broad-except
     sys.exit(1)
 
 
-app = FastAPI(title="DB-Anywhere", openapi_url=f"{settings.API_V1_STR}/openapi.json")
+app = FastAPI(title="DB-Anywhere", openapi_url=f"/{settings.API_V1_STR}/openapi.json")
 
 app.add_middleware(
     CORSMiddleware,

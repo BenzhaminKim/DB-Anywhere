@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: $DATABASE_NAME-pvc
+  name: $DATABASE_NAME
   namespace: $NAMESPACE
   labels:
     app: $DATABASE_NAME

@@ -9,7 +9,7 @@ from pydantic import BaseModel
 from fastapi import HTTPException
 from anywhere.users.repository import UserDB
 from anywhere.common.config import settings
-from anywhere.users.const import ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY, TOKEN_TYPE
+from anywhere.users.const import REFRESH_TOKEN_KEY, TOKEN_TYPE
 
 # to get a string like this run:
 # openssl rand -hex 32

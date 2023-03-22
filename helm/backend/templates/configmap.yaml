@@ -14,3 +14,4 @@ data:
   NAMESPACE: "anywhere"
   SIGNATURE: "db-anywhere"
   SERVER_ADDRESS: "3.92.239.238"
+  DB_TOTAL_CAPACITY: "3"

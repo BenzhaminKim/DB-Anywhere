@@ -11,7 +11,7 @@ from anywhere.users.schemas.schema import (
 from anywhere.users.services.user_service import UserService
 from anywhere.users.services.auth_service import jwtBearer, UserToken
 from anywhere.users.schemas.schema import UserGetOut, RefreshTokenOut
-from anywhere.users.const import REFRESH_TOKEN_KEY, TOKEN_TYPE, ACCESS_TOKEN_KEY
+from anywhere.users.const import REFRESH_TOKEN_KEY, TOKEN_TYPE
 from logging import config, getLogger
 from anywhere.common._logging import logging_dependency
 
@@ -37,7 +37,7 @@ async def create_user(
     return UserRegisterOut.from_orm(user)
 
 
-@router.get("/refresh", response_model=RefreshTokenOut)
+@router.post("/refresh", response_model=RefreshTokenOut)
 async def refresh(
     user_token: UserToken = Depends(jwtBearer.validate_refresh_token_request),
     user_service: UserService = Depends(),
@@ -70,12 +70,13 @@ async def login(
     "/logout",
 )
 async def logout(
-    user_token: UserToken = Depends(jwtBearer),
+    response: Response,
 ) -> None:
     """
     Logout a user.
     """
 
+    response.delete_cookie(key=REFRESH_TOKEN_KEY)
     return None
 
 

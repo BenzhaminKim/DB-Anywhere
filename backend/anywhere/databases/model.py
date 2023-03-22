@@ -38,3 +38,5 @@ class Database(Base):
     @property
     def name_for_k8s(self) -> str:
         return f"{self.type}-{str(self.id)}"
+
+    

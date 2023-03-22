@@ -15,7 +15,6 @@ from anywhere.users.services.auth_service import (
     REFRESH_TOKEN_SECRET_KEY,
     UserToken,
 )
-from anywhere.users.const import ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY, TOKEN_TYPE
 
 
 class UserService:

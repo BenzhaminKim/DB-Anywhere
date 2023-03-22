@@ -132,3 +132,8 @@ class DatabaseUpdateIn(BaseModelORMTrue):
 
 class DatabaseUpdateOut(DatabaseCreateOut):
     ...
+
+
+class DatabaseCapacityGetOut(BaseModelORMTrue):
+    current_database_capacity: int
+    maximum_database_capacity: int

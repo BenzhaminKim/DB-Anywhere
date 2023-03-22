@@ -32,7 +32,7 @@ run-local-db:
 	docker run  --name anywheredb -p 5432:5432 -e POSTGRES_USER=anywhere -e POSTGRES_PASSWORD=anywhere -e POSTGRES_DB=anywhere -e POSTGRES_PASSWORD=anywhere -d postgres:14.3-alpine 
 
 docker-build:
-	docker build --platform linux/amd64 -t dudgnl23/anywhere-backend:0.0.1 -f docker/Dockerfile .
+	docker build --platform linux/amd64 -t dudgnl23/anywhere-backend:0.0.1 -f docker/backend/Dockerfile .
 
 docker-push:
 	docker push dudgnl23/anywhere-backend:0.0.1

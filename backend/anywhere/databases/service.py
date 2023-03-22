@@ -84,7 +84,7 @@ class DatabaseService:
 
         if not database:
             raise HTTPException(status_code=404, detail="Database is not found")
-        self._update_status(database)
+
         return database
 
     def get_current_capacity(self, user_id: str) -> DatabaseCapacityGetOut:

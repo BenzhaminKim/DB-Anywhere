@@ -37,7 +37,7 @@ class DatabaseDB:
             session.commit()
             session.refresh(database)
 
-        return database
+            return database
 
     def get(self, user_id: str, database_id: Database) -> Database:
         """
@@ -52,8 +52,9 @@ class DatabaseDB:
             )
 
             result = session.execute(stmt)
+            session.commit()
 
-        return result.scalars().one_or_none()
+            return result.scalars().one_or_none()
 
     def get_all_by_user_id(self, user_id: str) -> List[Database]:
         """
@@ -69,8 +70,9 @@ class DatabaseDB:
             )
 
             result = session.execute(stmt)
+            session.commit()
 
-        return result.scalars().unique().all()
+            return result.scalars().unique().all()
 
     def get_total_capacity_by_user_id(self, user_id: str) -> int:
         """
@@ -82,6 +84,7 @@ class DatabaseDB:
             )
 
             result = session.execute(stmt)
+            session.commit()
 
             total_capacity = result.scalar_one()
             return total_capacity if total_capacity else 0
@@ -107,3 +110,4 @@ class DatabaseDB:
             stmt = update(Database).where(Database.id == database_id).values(**kwargs)
 
             session.execute(stmt)
+            session.commit()

@@ -132,10 +132,11 @@ class DatabaseService:
                 status_code=400, detail="Not allowed to delete the database."
             )
 
-        self._database_db.delete(database_id=database_id)
-
         database_k8s = DatabaseK8S(database=database)
         database_k8s.delete_database_k8s()
+        
+        self._database_db.delete(database_id=database_id)
+
 
         return database_id
 

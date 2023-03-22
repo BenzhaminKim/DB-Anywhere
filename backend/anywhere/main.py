@@ -22,26 +22,31 @@ logger = getLogger(__name__)
 
 logger.debug("start")
 
+def create_app():
+    db = DatabaseConnection()
+    try:
+        db.create_database()
+    except Exception as e:  # pylint: disable=broad-except
+        logger.exception("db.create_database failed", exc_info=e)
+        sys.exit(1)
 
-db = DatabaseConnection()
-try:
-    db.create_database()
-except Exception as e:  # pylint: disable=broad-except
-    logger.exception("db.create_database failed", exc_info=e)
-    sys.exit(1)
+
+    app = FastAPI(title="DB-Anywhere", openapi_url=f"/{settings.API_V1_STR}/openapi.json")
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+
+    router_prefix = f"/api/{settings.API_V1_STR}"
+
+    app.include_router(users_router, prefix=router_prefix)
+    app.include_router(databases_router, prefix=router_prefix)
+
+    return app
 
 
-app = FastAPI(title="DB-Anywhere", openapi_url=f"/{settings.API_V1_STR}/openapi.json")
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-router_prefix = f"/api/{settings.API_V1_STR}"
-
-app.include_router(users_router, prefix=router_prefix)
-app.include_router(databases_router, prefix=router_prefix)
+app = create_app()

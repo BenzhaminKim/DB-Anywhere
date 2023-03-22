@@ -14,7 +14,7 @@ if __name__ == "__main__":
         logger.info("start event listener")
 
         logger.info(
-            f"{settings.POSTGRES_SERVER=}",
+            f"{settings.POSTGRES_SERVER=} {settings.SQLALCHEMY_DATABASE_URI=}",
         )
 
         deployment_listener = DeploymentListener()

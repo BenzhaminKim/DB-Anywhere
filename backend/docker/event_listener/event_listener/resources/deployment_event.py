@@ -46,8 +46,11 @@ class DeploymentListener(EventListener):
             self.update(database_deployment=database_deployment)
 
     def update(self, database_deployment: DatabaseDeployment):
+
         stmt = (f"UPDATE databases SET status='{database_deployment.status}' "
                 f"WHERE id='{database_deployment.database_uuid}'")
-
-        self.db_client.update(stmt)
         logger.info(stmt)
+        try:
+            self.db_client.update(stmt)
+        except Exception as e:
+            logger.exception(e)

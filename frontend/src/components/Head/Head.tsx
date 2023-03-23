@@ -10,7 +10,7 @@ interface HeadProps {
 
 export default function Head({ title = '', description = '' }: HeadProps) {
 	return (
-		<Helmet title={title ? `${title} | DB Anywhere` : undefined} defaultTitle="Bulletproof React">
+		<Helmet title={title ? `${title} | DB Anywhere` : undefined} defaultTitle="DB Anywhere">
 			<meta name="description" content={description} />
 		</Helmet>
 	);

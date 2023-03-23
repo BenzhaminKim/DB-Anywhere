@@ -1,7 +1,6 @@
 const globalAntTheme = {
 	token: {
-		colorPrimary: '#06a390',
-		colorError: '#c94031',
+		colorPrimary: '#007aff',
 	},
 };
 

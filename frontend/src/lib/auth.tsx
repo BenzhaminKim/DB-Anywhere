@@ -1,14 +1,15 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { configureAuth } from 'react-query-auth';
-import storage from '@/utils/storage';
 import {
 	getUser,
 	LoginCredentialsDTO,
 	loginWithEmailAndPassword,
 	RegisterCredentialsDTO,
 	registerWithEmailAndPassword,
+	logout,
 } from '@/features/auth';
 import axios from '@/lib/axios';
+import USER_QUERY_KEY from '@/features/auth/constants/auth';
 
 async function userFn() {
 	if (axios.defaults.headers.common.Authorization) {
@@ -32,12 +33,13 @@ async function registerFn(data: RegisterCredentialsDTO) {
 }
 
 async function logoutFn() {
-	storage.clearToken();
-	window.location.assign(window.location.origin as unknown as string);
+	await logout();
+	axios.defaults.headers.common.Authorization = undefined;
 }
 
 const authConfig = {
 	userFn,
+	userKey: USER_QUERY_KEY,
 	loginFn,
 	registerFn,
 	logoutFn,

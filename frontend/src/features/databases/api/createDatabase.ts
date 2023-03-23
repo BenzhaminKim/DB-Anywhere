@@ -15,7 +15,7 @@ export type CreateDatabaseDTO = {
 };
 
 export const createDatabase = (data: CreateDatabaseDTO): Promise<Database> => {
-	return axios.post('/v1/databases', data);
+	return axios.post('/api/v1/databases', data);
 };
 
 type UseCreateDatabasesOptions = {

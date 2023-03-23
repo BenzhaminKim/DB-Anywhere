@@ -11,7 +11,7 @@ const ProfileCard = ({ userData }: { userData: AuthUser | null | undefined }) =>
 	const { name, email } = userData;
 	return (
 		<Card>
-			<Avatar size={88} icon={<UserOutlined />} />
+			<Avatar size={88} icon={<UserOutlined />} style={{ marginTop: '5px' }} />
 			<Title level={2} style={{ marginTop: '37px', marginBottom: 0 }}>
 				{name}
 			</Title>

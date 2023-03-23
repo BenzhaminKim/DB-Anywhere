@@ -14,10 +14,10 @@ const Dashboard = () => {
 			<StyledDashboardMain>
 				<StyledDashboardContent>
 					<Row gutter={[16, 24]}>
-						<Col className="gutter-row" span={8}>
+						<Col className="gutter-row" xs={{ span: 24 }} lg={{ span: 8 }}>
 							<ProfileCard userData={user.data} />
 						</Col>
-						<Col className="gutter-row" span={16}>
+						<Col className="gutter-row" xs={{ span: 24 }} lg={{ span: 16 }}>
 							<CapacityCard />
 						</Col>
 						<Col span={24}>

@@ -1,1 +1,1 @@
-export { Landing, NotFound, Dashboard } from './routes';
+export * from './routes';

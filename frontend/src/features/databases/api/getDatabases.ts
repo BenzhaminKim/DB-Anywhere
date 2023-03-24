@@ -5,7 +5,7 @@ import { ExtractFnReturnType, QueryConfig } from '@/lib/react-query';
 import { Database } from '../types';
 
 export const getDatabases = (): Promise<{ databases: Database[] }> => {
-	return axios.get('/v1/databases');
+	return axios.get('/api/v1/databases');
 };
 
 type QueryFnType = typeof getDatabases;

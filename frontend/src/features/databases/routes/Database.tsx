@@ -25,7 +25,7 @@ export const Database = () => {
 				<Descriptions.Item label="DB Type">{database.type}</Descriptions.Item>
 				<Descriptions.Item label="DB Name">{database.db_name}</Descriptions.Item>
 				<Descriptions.Item label="DB User">{database.db_user}</Descriptions.Item>
-				<Descriptions.Item label="DB Capacity">{database.db_capacity}</Descriptions.Item>
+				<Descriptions.Item label="DB CapacityCard">{database.db_capacity}</Descriptions.Item>
 				<Descriptions.Item label="DB Status">{database.status}</Descriptions.Item>
 				<Descriptions.Item label="DB CreatedAt">{database.created_at}</Descriptions.Item>
 			</Descriptions>

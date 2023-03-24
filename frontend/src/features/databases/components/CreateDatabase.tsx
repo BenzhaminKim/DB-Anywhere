@@ -28,13 +28,11 @@ const App: React.FC = () => {
 	return (
 		<>
 			<Button
-				type="primary"
+				type="link"
 				onClick={() => setIsModalOpen(true)}
 				icon={<PlusOutlined />}
 				loading={createDatabaseMutation.isLoading}
-			>
-				New Database
-			</Button>
+			/>
 			<Modal
 				title="Create a new database"
 				width={500}
@@ -51,6 +49,8 @@ const App: React.FC = () => {
 					<Form.Item name="type" label="Type" rules={[{ required: true, message: 'Please choose the type' }]}>
 						<Select placeholder="Please choose the type">
 							<Option value="postgres">PostgreSQL</Option>
+							<Option value="mysql">MySQL</Option>
+							<Option value="mongodb">MongoDB</Option>
 						</Select>
 					</Form.Item>
 					<Form.Item
@@ -76,7 +76,7 @@ const App: React.FC = () => {
 					</Form.Item>
 					<Form.Item
 						name="db_capacity"
-						label="Database Capacity"
+						label="Database CapacityCard"
 						rules={[{ required: true, message: 'Please enter database capacity' }]}
 					>
 						<InputNumber style={{ width: '100%' }} />

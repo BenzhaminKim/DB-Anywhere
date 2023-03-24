@@ -14,12 +14,6 @@ export default function DatabasesList() {
 			rowKey="id"
 			columns={[
 				{
-					title: 'Id',
-					dataIndex: 'id',
-					key: 'id',
-					render: (id: string) => <Link to={`./${id}`}>{id}</Link>,
-				},
-				{
 					title: 'Name',
 					dataIndex: 'name',
 					key: 'name',
@@ -40,7 +34,7 @@ export default function DatabasesList() {
 					key: 'db_user',
 				},
 				{
-					title: 'DB Capacity',
+					title: 'Capacity',
 					dataIndex: 'db_capacity',
 					key: 'db_capacity',
 				},
@@ -54,16 +48,6 @@ export default function DatabasesList() {
 					dataIndex: 'created_at',
 					key: 'created_at',
 					render: (time) => formatDate(time),
-				},
-				{
-					title: 'Action',
-					key: 'action',
-					render: (_, row) => (
-						<Space size="middle" split={<Divider type="vertical" />}>
-							<a>Edit</a>
-							<DeleteDatabase databaseId={row.id} />
-						</Space>
-					),
 				},
 			]}
 		/>

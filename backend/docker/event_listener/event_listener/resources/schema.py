@@ -31,7 +31,7 @@ class DatabaseStatus(StrEnum):
     """
 
     processing = auto()
-    ready = auto()
+    running = auto()
     error = auto()
 
     @classmethod
@@ -40,7 +40,7 @@ class DatabaseStatus(StrEnum):
             return DatabaseStatus.error
 
         if deployment.status.ready_replicas and deployment.status.ready_replicas == 1:
-            return DatabaseStatus.ready
+            return DatabaseStatus.running
 
         return DatabaseStatus.processing
 

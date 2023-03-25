@@ -8,6 +8,8 @@ from anywhere.databases.model import Database
 from anywhere.common.config import settings
 from kubernetes.client.models import V1Service
 
+from anywhere.databases.schemas.enum import DatabaseType
+
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
@@ -21,9 +23,18 @@ class DatabaseK8SService(KubernetesClient):
         self.yaml = self._load_yaml()
         super().__init__()
 
+    def _get_port(self) -> int:
+        ports_dict = {
+            DatabaseType.mongodb : 27017,
+            DatabaseType.mysql : 3306,
+            DatabaseType.postgres : 5432,
+        }
+        return ports_dict[self.database.type]
+
     def _load_yaml(self):
         TEMPLATE_PATH = TEMPLATES_DIR / "service.yaml"
-
+        port = self._get_port()
+        
         with open(TEMPLATE_PATH) as f:
             template = Template(f.read())
 
@@ -32,6 +43,7 @@ class DatabaseK8SService(KubernetesClient):
             DATABASE_UUID=str(self.database.id),
             SIGNATURE=settings.SIGNATURE,
             NAMESPACE=settings.NAMESPACE,
+            PORT=port,
         )
 
         yaml_dict = yaml.safe_load(yaml_str)

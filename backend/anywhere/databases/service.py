@@ -53,7 +53,7 @@ class DatabaseService:
         ):
             raise HTTPException(
                 status_code=400,
-                detail=f"You are not allowed to create total capacity more than {settings.DB_TOTAL_CAPACITY}GB",
+                detail=f"You are not allowed to create total capacity more than {settings.DB_TOTAL_CAPACITY}MB",
             )
 
         logger.info("user_id: %s, database_create_in: %s", user_id, database_create_in)
@@ -93,8 +93,8 @@ class DatabaseService:
             user_id=user_id
         )
         return DatabaseCapacityGetOut(
-            current_database_capacity=current_total_capacity,
-            maximum_database_capacity=settings.DB_TOTAL_CAPACITY,
+            current_capacity=current_total_capacity,
+            maximum_capacity=settings.DB_TOTAL_CAPACITY,
         )
 
     def get_all(self, user_id: str) -> List[DatabaseGetAllBase]:

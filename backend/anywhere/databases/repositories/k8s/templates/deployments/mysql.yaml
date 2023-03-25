@@ -20,22 +20,24 @@ spec:
         database-uuid: $DATABASE_UUID
     spec:
       containers:
-        - name: postgres
-          image: postgres:10.1 #TODO: Image 변경
+        - name: mysql
+          image: mysql:8.0 
           imagePullPolicy: "IfNotPresent"
           ports:
-            - containerPort: 5432
+            - containerPort: 3306
           env:
-          - name: POSTGRES_USER
+          - name: MYSQL_USER
             value: $DB_USER
-          - name: POSTGRES_PASSWORD
+          - name: MYSQL_ROOT_PASSWORD
             value: $DB_PASSWORD
-          - name: POSTGRES_DB
+          - name: MYSQL_PASSWORD
+            value: $DB_PASSWORD
+          - name: MYSQL_DATABASE
             value: $DB_NAME
           volumeMounts:
-            - mountPath: /var/lib/postgresql/data
-              name: postgredb
+            - mountPath: /var/lib/mysql
+              name: db-volume
       volumes:
-        - name: postgredb
+        - name: db-volume
           persistentVolumeClaim:
             claimName: $DATABASE_NAME

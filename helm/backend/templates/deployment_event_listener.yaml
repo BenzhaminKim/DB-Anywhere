@@ -37,7 +37,7 @@ spec:
             - name: NAMESPACE
               value: anywhere
             - name: POSTGRES_SERVER
-              value: {{ include "backend.fullname" . }}.anywhere
+              value: db-anywhere-postgres.anywhere
             - name: POSTGRES_USER
               value: anywhere
             - name: POSTGRES_PASSWORD

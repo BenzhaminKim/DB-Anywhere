@@ -6,7 +6,7 @@ BRANCH_NAME := $(shell git rev-parse --abbrev-ref HEAD)
 MODIFIED_BRANCH_NAME := $(shell git rev-parse --abbrev-ref HEAD | tr '/' '-' | tr '_' '-' | tr '[:upper:]' '[:lower:]')
 
 docker-build:
-	docker build -t dudgnl23/anywhere-frontend:0.0.1 .
+	docker build --platform linux/amd64 -t dudgnl23/anywhere-frontend:0.0.1 .
 
 docker-push:
 	docker push dudgnl23/anywhere-frontend:0.0.1

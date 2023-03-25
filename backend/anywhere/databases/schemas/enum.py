@@ -7,7 +7,7 @@ class DatabaseStatus(StrEnum):
     """
 
     processing = auto()
-    ready = auto()
+    running = auto()
     error = auto()
 
 

@@ -37,7 +37,7 @@ class DatabaseK8S:
             return DatabaseStatus.error
 
         if deployment.status.ready_replicas and deployment.status.ready_replicas == 1:
-            return DatabaseStatus.ready
+            return DatabaseStatus.running
 
         return DatabaseStatus.processing
 

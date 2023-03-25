@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: $DATABASE_NAME
+  namespace: $NAMESPACE
+  labels:
+    app: $DATABASE_NAME
+    database-uuid: $DATABASE_UUID
+    signature: $SIGNATURE
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: $DATABASE_NAME
+  template:
+    metadata:
+      labels:
+        app: $DATABASE_NAME
+        signature: $SIGNATURE
+        database-uuid: $DATABASE_UUID
+    spec:
+      containers:
+        - name: mongo
+          image: mongo:6.0 #TODO: Image 변경
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: 27017
+          env:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: $DB_USER
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            value: $DB_PASSWORD
+          - name: MONGO_INITDB_DATABASE
+            value: $DB_NAME
+          volumeMounts:
+            - mountPath: /data/db
+              name: db-volume
+      volumes:
+        - name: db-volume
+          persistentVolumeClaim:
+            claimName: $DATABASE_NAME

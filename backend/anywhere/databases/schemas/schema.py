@@ -27,7 +27,7 @@ class DatabaseCreateIn(BaseModelORMTrue):
     db_name: str
     db_user: str
     db_password: str
-    db_capacity: int = Query(default=1, gt=0, lt=3)
+    db_capacity: int = Query(default=50, gt=1, lt=50)
 
 
 class DatabaseCreateOut(BaseModelORMTrue):
@@ -135,5 +135,6 @@ class DatabaseUpdateOut(DatabaseCreateOut):
 
 
 class DatabaseCapacityGetOut(BaseModelORMTrue):
-    current_database_capacity: int
-    maximum_database_capacity: int
+    current_capacity: int
+    maximum_capacity: int
+    unit: str = "MB"

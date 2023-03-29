@@ -1,5 +1,4 @@
 import { Card } from 'antd';
-import { DatabaseFilled } from '@ant-design/icons';
 
 import DatabasesList from '@/features/databases/components/DatabasesList';
 import CreateDatabase from '@/features/databases/components/CreateDatabase';

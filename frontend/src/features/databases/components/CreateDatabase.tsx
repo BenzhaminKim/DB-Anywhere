@@ -3,6 +3,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, InputNumber, Modal, Select } from 'antd';
 
 import { CreateDatabaseDTO, useCreateDatabase } from '../api/createDatabase';
+import { useDatabaseCapacity } from '../api/getDatabaseCapacity';
 
 const { Option } = Select;
 
@@ -10,6 +11,13 @@ const App: React.FC = () => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [form] = Form.useForm();
 	const createDatabaseMutation = useCreateDatabase();
+	const databaseCapacityQuery = useDatabaseCapacity();
+	let unit = 'MB';
+	let maximumCapacity = 0;
+	if (databaseCapacityQuery.data) {
+		unit = databaseCapacityQuery.data.unit;
+		maximumCapacity = databaseCapacityQuery.data.maximum_capacity - databaseCapacityQuery.data.current_capacity;
+	}
 
 	const handleCancel = () => {
 		setIsModalOpen(false);
@@ -76,10 +84,10 @@ const App: React.FC = () => {
 					</Form.Item>
 					<Form.Item
 						name="db_capacity"
-						label="Database CapacityCard"
+						label="Database Capacity"
 						rules={[{ required: true, message: 'Please enter database capacity' }]}
 					>
-						<InputNumber style={{ width: '100%' }} />
+						<InputNumber min={1} max={maximumCapacity} addonAfter={unit} />
 					</Form.Item>
 				</Form>
 			</Modal>

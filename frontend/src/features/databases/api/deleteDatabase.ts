@@ -16,6 +16,7 @@ export const useDeleteDatabase = ({ config }: UseDeleteDatabasesOptions) => {
 	return useMutation({
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({ queryKey: ['databases'] });
+			await queryClient.invalidateQueries({ queryKey: ['databaseCapacity'] });
 		},
 		...config,
 		mutationFn: deleteDatabase,

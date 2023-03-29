@@ -26,6 +26,7 @@ export const useCreateDatabase = ({ config }: UseCreateDatabasesOptions = {}) =>
 	return useMutation({
 		onSuccess: async () => {
 			await queryClient.invalidateQueries({ queryKey: ['databases'] });
+			await queryClient.invalidateQueries({ queryKey: ['databaseCapacity'] });
 		},
 		...config,
 		mutationFn: createDatabase,

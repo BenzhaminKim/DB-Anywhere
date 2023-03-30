@@ -21,7 +21,7 @@ export default function AppProvider({ children }: AppProviderProps) {
 		<React.Suspense fallback={<div>SPIN</div>}>
 			<HelmetProvider>
 				<QueryClientProvider client={queryClient}>
-					<ReactQueryDevtools initialIsOpen={false} />
+					{process.env.NODE_ENV === 'development' && <ReactQueryDevtools initialIsOpen={false} />}
 					<ThemeProvider theme={theme}>
 						<ConfigProvider theme={globalAntTheme}>
 							<AuthLoader

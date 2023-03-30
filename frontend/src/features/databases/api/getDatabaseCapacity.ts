@@ -19,5 +19,6 @@ export const useDatabaseCapacity = ({ config }: UseDatabaseCapacityOptions = {})
 		...config,
 		queryKey: ['databaseCapacity'],
 		queryFn: () => getDatabaseCapacity(),
+		refetchInterval: 10000,
 	});
 };

@@ -2,7 +2,7 @@ import { Typography, Table } from 'antd';
 import { formatDate } from '@/utils/format';
 import { useState } from 'react';
 
-import DatabaseDrawer from '../components/DatabaseDrawer';
+import DatabaseDrawer from './DatabaseDrawer';
 import { useDatabases } from '../api/getDatabases';
 
 const { Link } = Typography;

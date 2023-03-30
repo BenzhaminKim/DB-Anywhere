@@ -23,6 +23,14 @@ export default function DeleteDatabase({ databaseId, callbackFunc }: DeleteDatab
 		);
 	};
 
+	if (!databaseId) {
+		return (
+			<Button type="link" disabled>
+				Delete
+			</Button>
+		);
+	}
+
 	return (
 		<>
 			<Button type="link" onClick={() => setIsModalOpen(true)} loading={deleteDatabaseMutation.isLoading}>

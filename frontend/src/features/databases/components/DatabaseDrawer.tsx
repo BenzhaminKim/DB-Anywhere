@@ -11,9 +11,6 @@ type DatabaseDrawerProps = {
 
 const DatabaseDrawer = ({ databaseId, setSelectedDatabaseId }: DatabaseDrawerProps) => {
 	const databaseQuery = useDatabase({ databaseId: databaseId as string });
-	if (databaseQuery.isLoading) {
-		return null;
-	}
 	const database = databaseQuery.data;
 	return (
 		<Drawer

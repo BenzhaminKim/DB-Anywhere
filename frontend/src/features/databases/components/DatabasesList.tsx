@@ -1,14 +1,12 @@
-import { Typography, Table } from 'antd';
+import { Table, Button } from 'antd';
 import { formatDate } from '@/utils/format';
 import { useState } from 'react';
 
 import DatabaseDrawer from './DatabaseDrawer';
 import { useDatabases } from '../api/getDatabases';
 
-const { Link } = Typography;
-
-export default function DatabasesList() {
-	const [selectedDatabaseId, setSelectedDatabaseId] = useState(undefined);
+const DatabasesList = () => {
+	const [selectedDatabaseId, setSelectedDatabaseId] = useState<string | undefined>(undefined);
 	const databasesQuery = useDatabases();
 	return (
 		<div>
@@ -21,7 +19,11 @@ export default function DatabasesList() {
 						title: 'Name',
 						dataIndex: 'name',
 						key: 'name',
-						render: (name, row) => <Link onClick={() => setSelectedDatabaseId(row.id)}>{name}</Link>,
+						render: (name, row) => (
+							<Button type="link" onClick={() => setSelectedDatabaseId(row.id)} style={{ padding: 0 }}>
+								{name}
+							</Button>
+						),
 					},
 					{
 						title: 'Type',
@@ -60,4 +62,6 @@ export default function DatabasesList() {
 			<DatabaseDrawer databaseId={selectedDatabaseId} setSelectedDatabaseId={setSelectedDatabaseId} />
 		</div>
 	);
-}
+};
+
+export default DatabasesList;

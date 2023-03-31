@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: anywhere
+  namespace: anywhere
+spec:
+  gateways:
+  - anywhere
+  hosts:
+  - dbee-anywhere.com
+  http:
+  - match:
+    - uri:
+        prefix: /
+    route:
+    - destination:
+        host: db-anywhere-frontend
+        port:
+          number: 5173

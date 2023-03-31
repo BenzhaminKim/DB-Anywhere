@@ -43,7 +43,8 @@ class DeploymentListener(EventListener):
             )
 
             logger.info(database_deployment)
-            self.update(database_deployment=database_deployment)
+            if event["type"] != 'DELETED':
+                self.update(database_deployment=database_deployment)
 
     def update(self, database_deployment: DatabaseDeployment):
 

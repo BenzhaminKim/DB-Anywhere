@@ -41,7 +41,9 @@ class ServiceListener(EventListener):
             )
 
             logger.info(database_service)
-            self.update(database_service=database_service)
+
+            if event["type"] != 'DELETED':
+                self.update(database_service=database_service)
 
     
     def update(self, database_service: DatabaseService):

@@ -23,7 +23,6 @@ function RegisterForm() {
 	const [form] = Form.useForm();
 
 	const onFinish = (values: any) => {
-		console.log('Received values of form: ', values);
 		const { name, email, password } = values;
 		const userInfo: RegisterCredentialsDTO = {
 			name,

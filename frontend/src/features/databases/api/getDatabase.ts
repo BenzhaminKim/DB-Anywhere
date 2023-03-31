@@ -19,6 +19,8 @@ export const useDatabase = ({ databaseId, config }: UseDatabaseOptions) => {
 	return useQuery<ExtractFnReturnType<QueryFnType>>({
 		...config,
 		queryKey: ['database', databaseId],
+		enabled: Boolean(databaseId),
 		queryFn: () => getDatabase({ databaseId }),
+		refetchInterval: 10000,
 	});
 };

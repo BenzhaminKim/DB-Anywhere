@@ -14,9 +14,8 @@ const StyledDiv = styled.div`
 export default function FirstLoading() {
 	return (
 		<StyledDiv>
-			<Spin tip="Loading" size="large">
-				<div className="content" />
-			</Spin>
+			<Spin tip="Loading" size="large" />
+			<div className="content" style={{ marginTop: '10px' }} />
 		</StyledDiv>
 	);
 }

@@ -3,13 +3,33 @@ import { Button, Modal } from 'antd';
 
 import { useDeleteDatabase } from '../api/deleteDatabase';
 
-export default function DatabasesList({ databaseId }: { databaseId: string }) {
+type DeleteDatabaseProps = {
+	databaseId: string;
+	callbackFunc: () => void;
+};
+
+export default function DeleteDatabase({ databaseId, callbackFunc }: DeleteDatabaseProps) {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const deleteDatabaseMutation = useDeleteDatabase({ databaseId });
 
 	const handleOK = async () => {
-		await deleteDatabaseMutation.mutateAsync({ databaseId });
+		await deleteDatabaseMutation.mutateAsync(
+			{ databaseId },
+			{
+				onSuccess: () => {
+					callbackFunc();
+				},
+			}
+		);
 	};
+
+	if (!databaseId) {
+		return (
+			<Button type="link" disabled>
+				Delete
+			</Button>
+		);
+	}
 
 	return (
 		<>

@@ -19,5 +19,6 @@ export const useDatabases = ({ config }: UseDatabasesOptions = {}) => {
 		...config,
 		queryKey: ['databases'],
 		queryFn: () => getDatabases(),
+		refetchInterval: 10000,
 	});
 };

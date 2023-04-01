@@ -7,7 +7,7 @@ export type Database = {
 	db_capacity: number;
 	status: string;
 	db_password: string;
-	db_port: 0;
+	db_port: number;
 	db_host: string;
 	created_at: string;
 };

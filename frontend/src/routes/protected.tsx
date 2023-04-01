@@ -29,11 +29,15 @@ function App() {
 const protectedRoutes = [
 	{
 		path: '/app',
+		element: <Navigate to="/app/" replace />,
+	},
+	{
+		path: '/app/*',
 		element: <App />,
 		children: [
 			{ path: 'database/*', element: <DatabasesRoutes /> },
 			{ path: '', element: <Dashboard /> },
-			{ path: '*', element: <Navigate to="." /> },
+			{ path: '*', element: <Navigate to="." replace /> },
 		],
 	},
 ];

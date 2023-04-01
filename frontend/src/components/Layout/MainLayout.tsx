@@ -1,6 +1,5 @@
 import React from 'react';
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { Layout, theme } from 'antd';
+import { Layout } from 'antd';
 
 import Header from './Header';
 
@@ -10,11 +9,7 @@ type MainLayoutProps = {
 	children: React.ReactNode;
 };
 
-export default function MainLayout({ children }: MainLayoutProps) {
-	const {
-		token: { colorBgContainer },
-	} = theme.useToken();
-
+const MainLayout = ({ children }: MainLayoutProps) => {
 	return (
 		<Layout
 			className="site-layout"
@@ -26,11 +21,13 @@ export default function MainLayout({ children }: MainLayoutProps) {
 				backgroundColor: '#32a2f6',
 			}}
 		>
-			<Header style={{ padding: 0, background: colorBgContainer }} />
+			<Header />
 			<Content style={{ padding: 24, margin: 0, minHeight: 280, background: 'transparent' }}>{children}</Content>
 			<Footer style={{ textAlign: 'center', background: 'transparent' }}>
-				DB Anywhere ©2023 Created by Younghwi Kim, Seunghyun Yu
+				DbeeAnywhere ©2023 Created by Younghwi Kim, Seunghyun Yu
 			</Footer>
 		</Layout>
 	);
-}
+};
+
+export default MainLayout;

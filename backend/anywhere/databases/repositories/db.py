@@ -52,7 +52,6 @@ class DatabaseDB:
             )
 
             result = session.execute(stmt)
-            session.commit()
 
             return result.scalars().one_or_none()
 
@@ -70,7 +69,6 @@ class DatabaseDB:
             )
 
             result = session.execute(stmt)
-            session.commit()
 
             return result.scalars().unique().all()
 
@@ -84,7 +82,6 @@ class DatabaseDB:
             )
 
             result = session.execute(stmt)
-            session.commit()
 
             total_capacity = result.scalar_one()
             return total_capacity if total_capacity else 0

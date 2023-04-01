@@ -1,4 +1,4 @@
-FROM node:16.19.0 as frontend
+FROM node:19-alpine3.16 as frontend
 
 WORKDIR /app
 

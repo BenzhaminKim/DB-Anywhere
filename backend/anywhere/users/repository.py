@@ -34,7 +34,7 @@ class UserDB:
             session.commit()
             session.refresh(user)
 
-        return user
+            return user
 
     async def exists_by_email(self, email: str) -> bool:
         """
@@ -45,8 +45,9 @@ class UserDB:
             stmt = select(User).where(User.email == email)
 
             result = session.execute(stmt)
+            session.commit()
 
-        return bool(result.scalars().one_or_none())
+            return bool(result.scalars().one_or_none())
 
     async def get(self, id: str) -> Optional[User]:
         """
@@ -57,8 +58,9 @@ class UserDB:
             stmt = select(User).where(User.id == id)
 
             result = session.execute(stmt)
+            session.commit()
 
-        return result.scalars().one_or_none()
+            return result.scalars().one_or_none()
 
     async def get_by_email(self, email: str) -> Optional[User]:
         """
@@ -69,5 +71,6 @@ class UserDB:
             stmt = select(User).where(User.email == email)
 
             result = session.execute(stmt)
+            session.commit()
 
-        return result.scalars().one_or_none()
+            return result.scalars().one_or_none()

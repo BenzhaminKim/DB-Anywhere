@@ -1,4 +1,4 @@
-FROM node:19.4.0
+FROM node:19-alpine3.16 as frontend
 
 WORKDIR /app
 
@@ -8,4 +8,9 @@ RUN npm i
 
 COPY . .
 
-ENTRYPOINT ["npm", "run", "dev"]
+RUN npm run build
+
+FROM nginx:alpine
+
+COPY nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
+COPY --from=frontend /app/dist /usr/share/nginx/html/

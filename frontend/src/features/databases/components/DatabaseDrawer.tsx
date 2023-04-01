@@ -1,5 +1,7 @@
-import { Descriptions, Drawer, Skeleton, Typography, Spin } from 'antd';
+import { Descriptions, Drawer, Skeleton, Typography, Spin, message } from 'antd';
 import { Dispatch, SetStateAction } from 'react';
+import { isAxiosError } from 'axios';
+
 import { useDatabase } from '../api/getDatabase';
 import { useUpdateDatabase } from '../api/updateDatabase';
 import DeleteDatabase from './DeleteDatabase';
@@ -30,7 +32,19 @@ const DatabaseDrawer = ({ databaseId, setSelectedDatabaseId }: DatabaseDrawerPro
 								tooltip: 'click to edit text',
 								onChange: async (name) => {
 									if (name && databaseId) {
-										await updateDatabaseMutation.mutateAsync({ data: { name }, databaseId });
+										await updateDatabaseMutation.mutateAsync(
+											{ data: { name }, databaseId },
+											{
+												onSuccess: () => {
+													message.success('Database information has been updated.');
+												},
+												onError: (error) => {
+													if (isAxiosError(error) && error.response) {
+														message.error(error.response.data.detail);
+													}
+												},
+											}
+										);
 									}
 								},
 							}}
@@ -55,11 +69,12 @@ const DatabaseDrawer = ({ databaseId, setSelectedDatabaseId }: DatabaseDrawerPro
 				<Descriptions column={1}>
 					<Descriptions.Item label="ID">{database.id}</Descriptions.Item>
 					<Descriptions.Item label="Type">{database.type}</Descriptions.Item>
-					<Descriptions.Item label="Name">{database.db_name}</Descriptions.Item>
-					<Descriptions.Item label="User">{database.db_user}</Descriptions.Item>
 					<Descriptions.Item label="Capacity">{`${database.db_capacity}MB`}</Descriptions.Item>
+					<Descriptions.Item label="Database Name">{database.db_name}</Descriptions.Item>
+					<Descriptions.Item label="User">{database.db_user}</Descriptions.Item>
 					<Descriptions.Item label="Status">{database.status}</Descriptions.Item>
 					<Descriptions.Item label="Host">{database.db_host}</Descriptions.Item>
+					<Descriptions.Item label="Port">{database.db_port}</Descriptions.Item>
 					<Descriptions.Item label="Password">{database.db_password}</Descriptions.Item>
 					<Descriptions.Item label="CreatedAt">{formatDate(database.created_at)}</Descriptions.Item>
 				</Descriptions>

@@ -17,7 +17,7 @@ const formItemLayout = {
 	},
 };
 
-function RegisterForm() {
+const RegisterForm = () => {
 	const navigate = useNavigate();
 	const registerMutation = useRegister();
 	const [form] = Form.useForm();
@@ -36,7 +36,7 @@ function RegisterForm() {
 				navigate('/auth/login');
 			},
 			onError: (error) => {
-				if (isAxiosError(error)) {
+				if (isAxiosError(error) && error.response) {
 					message.error(error.response.data.detail);
 				}
 			},
@@ -117,12 +117,16 @@ function RegisterForm() {
 
 			<Form.Item>
 				<Button loading={registerMutation.isLoading} type="primary" htmlType="submit" className="login-form-button">
-					Log in
+					Sign up
 				</Button>
 			</Form.Item>
-			<Link to="../login">Log In</Link>
+			<Link to="../login">
+				<Button type="link" style={{ padding: 0 }}>
+					Log In
+				</Button>
+			</Link>
 		</Form>
 	);
-}
+};
 
 export default RegisterForm;

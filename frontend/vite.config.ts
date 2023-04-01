@@ -9,15 +9,5 @@ export default defineConfig({
 			'@': path.resolve(__dirname, './src'),
 		},
 	},
-	server: {
-		host: '0.0.0.0',
-		proxy: {
-			'/api': {
-				target: 'http://44.208.196.178:32600',
-				changeOrigin: true,
-				secure: false,
-			},
-		},
-	},
 	plugins: [react()],
 });

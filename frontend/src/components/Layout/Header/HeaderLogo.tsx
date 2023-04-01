@@ -6,6 +6,6 @@ const StyledHeaderLogo = styled.div`
 	line-height: 20px;
 `;
 
-const HeaderLogo = () => <StyledHeaderLogo>DB Anywhere</StyledHeaderLogo>;
+const HeaderLogo = () => <StyledHeaderLogo>DbeeAnywhere</StyledHeaderLogo>;
 
 export default HeaderLogo;

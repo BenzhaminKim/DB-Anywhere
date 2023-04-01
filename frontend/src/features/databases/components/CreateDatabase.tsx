@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, InputNumber, Modal, Select } from 'antd';
+import { Button, Form, Input, InputNumber, message, Modal, Select } from 'antd';
+import { isAxiosError } from 'axios';
 
 import { CreateDatabaseDTO, useCreateDatabase } from '../api/createDatabase';
 import { useDatabaseCapacity } from '../api/getDatabaseCapacity';
@@ -12,11 +13,28 @@ const App: React.FC = () => {
 	const [form] = Form.useForm();
 	const createDatabaseMutation = useCreateDatabase();
 	const databaseCapacityQuery = useDatabaseCapacity();
+	const [messageApi, contextHolder] = message.useMessage();
 	let unit = 'MB';
 	let maximumCapacity = 0;
+	let remainingCapacity = 0;
 	if (databaseCapacityQuery.data) {
 		unit = databaseCapacityQuery.data.unit;
-		maximumCapacity = databaseCapacityQuery.data.maximum_capacity - databaseCapacityQuery.data.current_capacity;
+		remainingCapacity = databaseCapacityQuery.data.maximum_capacity - databaseCapacityQuery.data.current_capacity;
+		if (remainingCapacity > 25) {
+			maximumCapacity = 25;
+		} else {
+			maximumCapacity = remainingCapacity;
+		}
+	}
+
+	if (isModalOpen && remainingCapacity <= 0) {
+		messageApi.open({
+			key: 'UnableToCreateDatabaseMessage',
+			type: 'warning',
+			content: 'No more databases can be created because there is no remaining capacity.',
+			duration: 2,
+		});
+		setIsModalOpen(false);
 	}
 
 	const handleCancel = () => {
@@ -27,7 +45,12 @@ const App: React.FC = () => {
 	const handleSubmit = async (values: CreateDatabaseDTO) => {
 		await createDatabaseMutation.mutate(values, {
 			onSuccess: () => {
-				console.log('SUCCESS');
+				console.log('A new database has been created.');
+			},
+			onError: (error) => {
+				if (isAxiosError(error) && error.response) {
+					message.error(error.response.data.detail);
+				}
 			},
 		});
 		handleCancel();
@@ -35,6 +58,7 @@ const App: React.FC = () => {
 
 	return (
 		<>
+			{contextHolder}
 			<Button
 				type="link"
 				onClick={() => setIsModalOpen(true)}
@@ -87,8 +111,13 @@ const App: React.FC = () => {
 						label="Database Capacity"
 						rules={[{ required: true, message: 'Please enter database capacity' }]}
 					>
-						<InputNumber min={1} max={maximumCapacity} addonAfter={unit} />
+						<InputNumber min={0} max={maximumCapacity} addonAfter={unit} />
 					</Form.Item>
+					<div style={{ color: 'grey' }}>
+						For reference, the maximum capacity of one database is 25MB. Currently, your remaining capacity is{' '}
+						<span>{remainingCapacity}</span>
+						MB.
+					</div>
 				</Form>
 			</Modal>
 		</>

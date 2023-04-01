@@ -29,7 +29,7 @@ const CapacityCard = () => {
 	}
 	return (
 		<Card title={<span style={{ fontSize: '19px' }}>Capacity</span>}>
-			<Text>DB Anywhere is currently in closed beta, currently you can create databases within limited storage.</Text>
+			<Text>DbeeAnywhere is currently in closed beta, currently you can create databases within limited storage.</Text>
 			<StyledCapacityContent>
 				<StyledUserCapacity>{`${maximumCapacity}${unit}`}</StyledUserCapacity>
 				<StyledCapacityRight>

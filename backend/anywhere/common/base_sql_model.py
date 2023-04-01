@@ -26,13 +26,11 @@ class DatabaseConnection:
         self._bind = create_engine(db_url)
 
         logger.info("db_url: %s", db_url)
-        self._session_factory = orm.scoped_session(
-            orm.sessionmaker(
+        self._session_factory = orm.sessionmaker(
                 autocommit=False,
                 autoflush=False,
                 bind=self._bind,
-            ),
-        )
+            )
 
     def create_database(self) -> None:
         """

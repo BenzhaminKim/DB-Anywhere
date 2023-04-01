@@ -28,7 +28,7 @@ export default function Layout({ children, title }: LayoutProps) {
 			<Head title={title} />
 			<BackgroundDiv>
 				<div>
-					<TitleCard title="DB Anywhere" />
+					<TitleCard title="DbeeAnywhere" />
 					<Card style={{ minWidth: '400px', minHeight: '400px' }}>
 						<Title level={4}>{title}</Title>
 						<div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">

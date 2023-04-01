@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Modal } from 'antd';
+import { Button, message, Modal } from 'antd';
+import { isAxiosError } from 'axios';
 
 import { useDeleteDatabase } from '../api/deleteDatabase';
 
@@ -8,7 +9,7 @@ type DeleteDatabaseProps = {
 	callbackFunc: () => void;
 };
 
-export default function DeleteDatabase({ databaseId, callbackFunc }: DeleteDatabaseProps) {
+const DeleteDatabase = ({ databaseId, callbackFunc }: DeleteDatabaseProps) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const deleteDatabaseMutation = useDeleteDatabase({ databaseId });
 
@@ -17,7 +18,13 @@ export default function DeleteDatabase({ databaseId, callbackFunc }: DeleteDatab
 			{ databaseId },
 			{
 				onSuccess: () => {
+					message.success('Database has been deleted.');
 					callbackFunc();
+				},
+				onError: (error) => {
+					if (isAxiosError(error) && error.response) {
+						message.error(error.response.data.detail);
+					}
 				},
 			}
 		);
@@ -48,4 +55,6 @@ export default function DeleteDatabase({ databaseId, callbackFunc }: DeleteDatab
 			/>
 		</>
 	);
-}
+};
+
+export default DeleteDatabase;

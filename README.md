@@ -1,19 +1,12 @@
 # DB-Anywhere
 Database As a Service
 
-Problem: I want to configure the database in the cloud rather than locally.
+DbeeAnywhere allows for the deployment of popular databases such as PostgreSQL, MySQL, and MongoDB on the cloud, removing the need for physical hardware, software installation, and database configuration.
 
-Solution: Create and easily access PostgreSQL, MYSQL, and MongoDB in the cloud.
 
-Features:
+<img width="1155" alt="Screenshot 2023-07-26 at 8 48 15 PM" src="https://github.com/BenzhaminKim/DB-Anywhere/assets/37145466/2fa77d5c-9a9f-498e-89b4-8cab72e28753">
 
-<p>Sign up</p>
-<p>Log in/log out</p>
-<p>Create database</p>
-<p>Choose between PostgreSQL, MYSQL, and MongoDB when creating the database</p>
-<p>Choose database capacity when creating the database (free capacity is 10MB, larger capacity requires payment)</p>
-<p>Limit number of databases that can be created (one database is free, more requires payment)</p>
-<p>Delete database</p>
-<p>View all databases</p>
-<p>View database access information</p>
-<p>Check database capacity</p>
+
+<img width="1709" alt="Screenshot 2023-07-26 at 8 48 51 PM" src="https://github.com/BenzhaminKim/DB-Anywhere/assets/37145466/70784e5d-70e7-4293-b7af-80f3afb653bd">
+
+<img width="1707" alt="Screenshot 2023-07-26 at 8 49 29 PM" src="https://github.com/BenzhaminKim/DB-Anywhere/assets/37145466/7bc5536f-d0da-4ebc-8373-c1500cb3f527">
